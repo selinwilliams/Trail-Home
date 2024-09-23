@@ -199,5 +199,11 @@ router.delete("/:spotId", async (req, res) => {
 	} else {
 		res.status(401).json({ message: "Authentication required" });
 	}
+
+	//Create a review for a spot based on the spot's id
+	router.post("/spotId/reviews"), async() =>{
+		
+	}
+
 });
 module.exports = router;
