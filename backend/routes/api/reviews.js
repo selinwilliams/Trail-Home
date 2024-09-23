@@ -12,11 +12,14 @@ router.get("/current", async (req, res) => {
   if (user) {
     const reviews = await Review.findAll({
       where: {
-        ownerId: user.id,
+        userId: user.id,
       },
-      includes: [
+      include: [
         {
           model: User,
+          attributes: [
+            "id", "firstName", "lastName"
+          ]
         },
         {
           model: Spot,
