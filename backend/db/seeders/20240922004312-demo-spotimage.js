@@ -1,4 +1,5 @@
 "use strict";
+const { SpotImage } = require("../models");
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -7,16 +8,7 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		/**
-		 * Add seed commands here.
-		 *
-		 * Example:
-		 * await queryInterface.bulkInsert('People', [{
-		 *   name: 'John Doe',
-		 *   isBetaMember: false
-		 * }], {});
-		 */
-		await queryInterface.bulkInsert("SpotImages", [
+		await SpotImage.bulkCreate([
 			{
 				spotId: 1,
 				url: "https://prod.rockmedialibrary.com/api/public/content/c75dce0bc2714ce8b23c20fb49628bfa?v=5fdae3b6",

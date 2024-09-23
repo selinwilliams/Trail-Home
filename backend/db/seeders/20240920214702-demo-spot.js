@@ -1,7 +1,7 @@
 "use strict";
 
 const { query } = require("express");
-
+const { Spot } = require("../models");
 let options = {};
 if (process.env.NODE_ENV === "production") {
 	options.schema = process.env.SCHEMA; // define your schema in options object
@@ -9,16 +9,7 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		/**
-		 * Add seed commands here.
-		 *
-		 * Example:
-		 * await queryInterface.bulkInsert('People', [{
-		 *   name: 'John Doe',
-		 *   isBetaMember: false
-		 * }], {});
-		 */
-		await queryInterface.bulkInsert("Spots", [
+		await Spot.bulkCreate([
 			{
 				ownerId: 1,
 				address: "123 Disney Lane",
