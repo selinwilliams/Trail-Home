@@ -1,7 +1,5 @@
 "use strict";
 
-const { query } = require("express");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
@@ -14,18 +12,16 @@ module.exports = {
 		 *   isBetaMember: false
 		 * }], {});
 		 */
-		await queryInterface.bulkInsert("Spots", [
+		await queryInterface.bulkInsert("SpotImages", [
 			{
-				ownerId: 1,
-				address: "123 Disney Lane",
-				city: "San Francisco",
-				state: "California",
-				country: "United States of America",
-				lat: 37.7645358,
-				lng: -122.4730327,
-				name: "App Academy",
-				description: "Place where web developers are created",
-				price: 123,
+				spotId: 1,
+				url: "https://prod.rockmedialibrary.com/api/public/content/c75dce0bc2714ce8b23c20fb49628bfa?v=5fdae3b6",
+				preview: true,
+			},
+			{
+				spotId: 1,
+				url: "https://www.bhg.com/thmb/H9VV9JNnKl-H1faFXnPlQfNprYw=/1799x0/filters:no_upscale():strip_icc()/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+				preview: false,
 			},
 		]);
 	},
@@ -37,6 +33,6 @@ module.exports = {
 		 * Example:
 		 * await queryInterface.bulkDelete('People', null, {});
 		 */
-		await queryInterface.bulkDelete("Spots", null, {});
+		await queryInterface.bulkDelete("SpotImages", null, {});
 	},
 };
