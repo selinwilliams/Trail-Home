@@ -1,6 +1,5 @@
 "use strict";
 
-const { query } = require("express");
 const { Spot } = require("../models");
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -9,7 +8,6 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await Spot.bulkCreate([
 		await Spot.bulkCreate([
 			{
 				ownerId: 1,
