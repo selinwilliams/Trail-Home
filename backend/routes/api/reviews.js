@@ -29,6 +29,7 @@ router.get("/current", async (req, res) => {
 					include: { model: SpotImage },
 					attributes: { exclude: ["description", "createdAt", "updatedAt"] },
 				},
+				{ model: ReviewImage, attributes: ["id", "url"] },
 			],
 		});
 		// TRYING TO GET PREVIEW IMAGE URL TO SHOW !!!!!
@@ -70,11 +71,54 @@ router.post("/:reviewId/images", async (req, res) => {
 			} else {
 				res.status(404).json({ message: "Review couldn't be found" });
 			}
+		} // else {
+		// 	res.status(403).json({
+		// 		message: "Maximum number of images for this resource was reached",
+		// 	});
+		// }
+	}
+});
+
+router.put("/:reviewId", async (req, res) => {
+	const { user } = req;
+	const { review, stars } = req.body;
+	if (user) {
+		const reviews = await Review.findByPk(req.params.reviewId);
+		if (reviews) {
+			if (reviews.userId === user.id) {
+				const updatedReview = await reviews.update({
+					review,
+					stars,
+					updatedAt: new Date(),
+				});
+				res.json(updatedReview);
+			} else {
+				res.status(403).json({ message: "Forbidden" });
+			}
 		} else {
-			res.status(403).json({
-				message: "Maximum number of images for this resource was reached",
-			});
+			res.status(404).json({ message: "Review couldn't be found" });
 		}
+	} else {
+		res.status(401).json({ message: "Authentication required" });
+	}
+});
+
+router.delete("/:reviewId", async (req, res) => {
+	const { user } = req;
+	if (user) {
+		const review = await Review.findByPk(req.params.reviewId);
+		if (review) {
+			if (review.userId === user.id) {
+				await review.destroy();
+				res.json({ message: "Successfully deleted" });
+			} else {
+				res.status(403).json({ message: "Forbidden" });
+			}
+		} else {
+			res.status(404).json({ message: "Review couldn't be found" });
+		}
+	} else {
+		res.status(401).json({ message: "Authentication required" });
 	}
 });
 

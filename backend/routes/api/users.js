@@ -30,8 +30,9 @@ router.post("/", validateSignup, async (req, res) => {
 
 	const existingUser = await User.findOne({
 		where: {
-			[Op.or]: [{email}, {username}]
-		}
+			[Op.or]: [{ email: email }, { username: username }],
+		},
+		attributes: { include: ["username", "email"] },
 	});
 
 	if (existingUser) {
@@ -39,12 +40,14 @@ router.post("/", validateSignup, async (req, res) => {
 		if (existingUser.email === email) {
 			errors.email = "User with that email already exists";
 		}
-		if (existingUser.username === username ) {
-			errors.username = "User with that username already exists"
+		if (existingUser.username === username) {
+			errors.username = "User with that username already exists";
 		}
+
 		return res.status(500).json({
-			message: "User already exists"
-		})
+			message: "User already exists",
+			errors,
+		});
 	}
 
 	const hashedPassword = bcrypt.hashSync(password);
@@ -66,7 +69,7 @@ router.post("/", validateSignup, async (req, res) => {
 
 	await setTokenCookie(res, safeUser);
 
-	return res.json({
+	return res.status(201).json({
 		user: safeUser,
 	});
 });

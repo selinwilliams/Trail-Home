@@ -1,5 +1,11 @@
 const express = require("express");
-const { Spot, User, SpotImage, Review } = require("../../db/models");
+const {
+	Spot,
+	User,
+	SpotImage,
+	Review,
+	ReviewImage,
+} = require("../../db/models");
 const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -127,14 +133,14 @@ router.get("/current", async (req, res) => {
 router.get("/:spotId", async (req, res) => {
 	const spot = await Spot.findByPk(req.params.spotId, {
 		include: [
-			{ model: SpotImage },
+			{ model: SpotImage, attributes: ["id", "url", "preview"] },
 			{ model: User, as: "Owner", attributes: ["id", "firstName", "lastName"] },
 		],
 	});
 	if (spot) {
 		res.json(spot);
 	} else {
-		res.json({ message: "Spot couldn't be found" });
+		res.status(404).json({ message: "Spot couldn't be found" });
 	}
 });
 // Create a Spot
@@ -251,24 +257,41 @@ router.post("/:spotId/reviews", async (req, res) => {
 	if (user) {
 		const spot = await Spot.findByPk(req.params.spotId);
 		if (spot) {
-			const newReview = await Review.create({
-				spotId: spot.id,
-				userId: user.id,
-				review,
-				stars,
-			});
-			res.status(201).json(newReview);
+			const reviews = await Review.findOne({ where: { userId: user.id } });
+			if (reviews) {
+				res
+					.status(500)
+					.json({ message: "User already has a review for this spot" });
+			} else {
+				const newReview = await Review.create({
+					userId: user.id,
+					spotId: spot.id,
+					review,
+					stars,
+				});
+				res.status(201).json(newReview);
+			}
+		} else {
+			res.status(404).json({ message: "Spot couldn't be found" });
 		}
 	}
 });
 
 // Get all Reviews by a spot's Id
 router.get("/:spotId/reviews", async (req, res) => {
+	const spot = await Spot.findByPk(req.params.spotId);
 	const reviews = await Review.findAll({
 		where: { spotId: req.params.spotId },
-		include: { model: User, attributes: ["id", "firstName", "lastName"] },
+		include: [
+			{ model: User, attributes: ["id", "firstName", "lastName"] },
+			{ model: ReviewImage },
+		],
 	});
-	res.json({ reviews });
+	if (spot) {
+		res.json({ reviews });
+	} else {
+		res.status(404).json({ message: "Spot couldn't be found" });
+	}
 });
 
 module.exports = router;
