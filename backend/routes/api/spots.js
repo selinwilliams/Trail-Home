@@ -1,6 +1,7 @@
 const express = require("express");
-const { Spot, User, SpotImage, Review } = require("../../db/models");
+const { Spot, User, SpotImage, Review, Booking } = require("../../db/models");
 const router = express.Router();
+const { Op } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { DATE, Model, where } = require("sequelize");
@@ -270,5 +271,92 @@ router.get("/:spotId/reviews", async (req, res) => {
 	});
 	res.json({ reviews });
 });
+
+ //Get all Bookings for a Spot based on the Spot's id
+ router.get("/:spotId/bookings", async (req, res) => {
+	const { user } = req;
+
+	if (user) {
+		const spot = await Spot.findByPk(req.params.spotId)
+		if (spot) {
+			if ( spot.ownerId === user.id ) {
+				const booking = await Booking.findAll({
+					where: { spotId: spot.id },
+					include: { model: Spot }
+				})
+				res.json(booking);
+			}
+		}
+	}
+ });
+
+
+ //Create a Booking from a Spot based on the Spot's id
+ router.post("/:spotId/bookings", async(req, res) => {
+	const { user } = req;
+	const { startDate, endDate } = req.body;
+	const spot = await Spot.findByPk(req.params.spotId);
+
+	if (!spot) {
+		return res.status(404).json({ message: "Spot couldn't be found" });
+	}
+
+	// Check if the spot belongs to the current user
+	if (spot.ownerId === user.id) {
+		return res.status(403).json({
+			message: "You cannot book your own spot",
+		});
+	}
+
+	// Check for date conflicts with existing bookings for this spot
+	const conflictingBookings = await Booking.findOne({
+		where: {
+			spotId: spot.id,
+			[Op.or]: [
+				{
+					startDate: { [Op.lte]: endDate },
+					endDate: { [Op.gte]: startDate },
+				},
+			],
+		},
+	});
+
+	if (conflictingBookings) {
+		return res.status(403).json({
+			message: "Sorry, this spot is already booked for the specified dates",
+			errors: {
+				startDate: "Start date conflicts with an existing booking",
+				endDate: "End date conflicts with an existing booking",
+			},
+		});
+	};
+
+	const currentDate = new Date();
+	if (new Date(startDate) < currentDate) {
+		return res.status(400).json({
+			message: "Bad Request",
+			errors: {
+				startDate: "startDate cannot be in the past",
+			},
+		});
+	};
+
+	if (new Date(endDate) <= new Date(startDate)) {
+		return res.status(400).json({
+			message: "Bad Request",
+			errors: {
+				endDate: "endDate cannot be on or before startDate",
+			},
+		});
+	};
+
+	const newBooking = await Booking.create({
+		spotId: spot.id,
+		userId: user.id,
+		startDate,
+		endDate,
+	});
+	res.status(201).json(newBooking);
+ });
 
 module.exports = router;
