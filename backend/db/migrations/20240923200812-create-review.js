@@ -5,10 +5,11 @@ if (process.env.NODE_ENV === "production") {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable(
-			"SpotImages",
+			"Reviews",
 			{
 				id: {
 					allowNull: false,
@@ -19,31 +20,41 @@ module.exports = {
 				spotId: {
 					type: Sequelize.INTEGER,
 					allowNull: false,
-					references: { model: "Spots" },
+					references: {
+						model: "Spots",
+						key: "id",
+					},
 					onDelete: "CASCADE",
 				},
-				url: {
+				userId: {
+					type: Sequelize.INTEGER,
+					allowNull: false,
+					references: {
+						model: "Users",
+						key: "id",
+					},
+					onDelete: "CASCADE",
+				},
+				review: {
 					type: Sequelize.STRING,
 				},
-				preview: {
-					type: Sequelize.BOOLEAN,
+				stars: {
+					type: Sequelize.INTEGER,
 				},
 				createdAt: {
 					allowNull: false,
 					type: Sequelize.DATE,
-					defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
 				},
 				updatedAt: {
 					allowNull: false,
 					type: Sequelize.DATE,
-					defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
 				},
 			},
 			options
 		);
 	},
 	async down(queryInterface, Sequelize) {
-		options.tableName = "SpotImages";
+		options.tableName = "Reviews";
 		await queryInterface.dropTable(options);
 	},
 };

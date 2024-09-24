@@ -1,5 +1,5 @@
 const express = require("express");
-const { Spot, User, SpotImage } = require("../../db/models");
+const { Spot, User, SpotImage, Review } = require("../../db/models");
 const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -41,19 +41,40 @@ const spot = require("../../db/models/spot");
 // Get all Spots
 router.get("/", async (req, res) => {
 	const spots = await Spot.findAll({
-		include: { model: SpotImage },
+		include: [{ model: SpotImage }, { model: Review }],
 	});
+
+	// Mutate Spots object to add Avg Rating, previewImage
 	let Spots = [];
 	spots.forEach((spot) => {
 		Spots.push(spot.toJSON());
 	});
 
 	Spots.forEach((spot) => {
-		spot.SpotImages.forEach((image) => {
-			spot.previewImage = image.url;
-			delete spot.SpotImages;
-		});
+		// Grab all reviews
+		if (spot.Reviews.length) {
+			let count = 0;
+			// Iterate through reviews to find star count
+			spot.Reviews.forEach((review) => {
+				count += review.stars;
+			});
+			spot.avgRating = count / spot.Reviews.length;
+		} else {
+			spot.avgRating = 0;
+		}
+		if (spot.SpotImages.length) {
+			spot.SpotImages.forEach((image) => {
+				if (image.preview === true) {
+					spot.previewImage = image.url;
+				}
+			});
+		} else {
+			spot.previewImage = "no preview url";
+		}
+		delete spot.SpotImages;
+		delete spot.Reviews;
 	});
+
 	res.json({ Spots });
 });
 // Get all Spots owned by the Current User
@@ -63,18 +84,39 @@ router.get("/current", async (req, res) => {
 	if (user) {
 		const spots = await Spot.findAll({
 			where: { ownerId: user.id },
-			include: { model: SpotImage, where: { preview: true } },
+			include: [{ model: SpotImage }, { model: Review }],
 		});
+
+		// Array we will be putting all the resolved promises in
 		let Spots = [];
+		// Iterate through spots, convert to POJO
 		spots.forEach((spot) => {
 			Spots.push(spot.toJSON());
 		});
 
 		Spots.forEach((spot) => {
-			spot.SpotImages.forEach((image) => {
-				spot.previewImage = image.url;
-				delete spot.SpotImages;
-			});
+			// Grab all reviews
+			if (spot.Reviews.length) {
+				let count = 0;
+				// Iterate through reviews to find star count
+				spot.Reviews.forEach((review) => {
+					count += review.stars;
+				});
+				spot.avgRating = count / spot.Reviews.length;
+			} else {
+				spot.avgRating = 0;
+			}
+			if (spot.SpotImages.length) {
+				spot.SpotImages.forEach((image) => {
+					if (image.preview === true) {
+						spot.previewImage = image.url;
+					}
+				});
+			} else {
+				spot.previewImage = "no preview url";
+			}
+			delete spot.SpotImages;
+			delete spot.Reviews;
 		});
 		res.json({ Spots });
 	} else {
@@ -200,4 +242,33 @@ router.delete("/:spotId", async (req, res) => {
 		res.status(401).json({ message: "Authentication required" });
 	}
 });
+
+// Create a review for a spot based on the spot's id
+router.post("/:spotId/reviews", async (req, res) => {
+	const { user } = req;
+	const { review, stars } = req.body;
+
+	if (user) {
+		const spot = await Spot.findByPk(req.params.spotId);
+		if (spot) {
+			const newReview = await Review.create({
+				spotId: spot.id,
+				userId: user.id,
+				review,
+				stars,
+			});
+			res.status(201).json(newReview);
+		}
+	}
+});
+
+// Get all Reviews by a spot's Id
+router.get("/:spotId/reviews", async (req, res) => {
+	const reviews = await Review.findAll({
+		where: { spotId: req.params.spotId },
+		include: { model: User, attributes: ["id", "firstName", "lastName"] },
+	});
+	res.json({ reviews });
+});
+
 module.exports = router;
