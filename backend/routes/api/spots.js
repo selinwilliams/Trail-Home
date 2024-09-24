@@ -5,6 +5,7 @@ const {
 	SpotImage,
 	Review,
 	ReviewImage,
+	Sequelize,
 } = require("../../db/models");
 const router = express.Router();
 const { check } = require("express-validator");
@@ -13,36 +14,47 @@ const { DATE, Model, where } = require("sequelize");
 const spotimage = require("../../db/models/spotimage");
 const spot = require("../../db/models/spot");
 
-// const validateCreation = [
-// 	check("address")
-// 		.exists({ checkFalsy: true })
-// 		.withMessage("Street address is required"),
-// 	check("city").exists({ checkFalsy: true }).withMessage("City is required"),
-// 	check("state").exists({ checkFalsy: true }).withMessage("State is required"),
-// 	check("country")
-// 		.exists({ checkFalsy: true })
-// 		.withMessage("Country is required"),
-// 	check("lat")
-// 		.exists({ checkFalsy: true })
-// 		// .isLatLong({ checkDMS: true })
-// 		.withMessage("Latitude must be within -90 and 90"),
-// 	check("lng")
-// 		.exists({ checkFalsy: true })
-// 		// .isLatLong({ checkDMS: true })
-// 		.withMessage("Longitude must be within -180 and 180"),
-// 	check("name")
-// 		.exists({ checkFalsy: true })
-// 		.isLength({ max: 50 })
-// 		.withMessage("Name must be less than 50 characters"),
-// 	check("description")
-// 		.exists({ checkFalsy: true })
-// 		.withMessage("Description is required"),
-// 	check("price")
-// 		.exists({ checkFalsy: true })
-// 		.isDecimal({ blacklisted_chars: "-" })
-// 		.withMessage("Price per day must be a positive number"),
-// 	handleValidationErrors,
-// ];
+const validateCreation = [
+	check("address")
+		.exists({ checkFalsy: true })
+		.withMessage("Street address is required"),
+	check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+	check("state").exists({ checkFalsy: true }).withMessage("State is required"),
+	check("country")
+		.exists({ checkFalsy: true })
+		.withMessage("Country is required"),
+	check("lat")
+		.exists({ checkFalsy: true })
+		.isFloat({ min: -90, max: 90 })
+		.withMessage("Latitude must be within -90 and 90"),
+	check("lng")
+		.exists({ checkFalsy: true })
+		.isFloat({ min: -180, max: 180 })
+		.withMessage("Longitude must be within -180 and 180"),
+	check("name")
+		.exists({ checkFalsy: true })
+		.isLength({ max: 50 })
+		.withMessage("Name must be less than 50 characters"),
+	check("description")
+		.exists({ checkFalsy: true })
+		.withMessage("Description is required"),
+	check("price")
+		.exists({ checkFalsy: true })
+		.custom((value) => (value >= 0 ? true : false))
+		.withMessage("Price per day must be a positive number"),
+	handleValidationErrors,
+];
+
+const validateReview = [
+	check("review")
+		.exists({ checkFalsy: true })
+		.withMessage("Review text is required"),
+	check("stars")
+		.exists({ checkFalsy: true })
+		.isFloat({ min: 1, max: 5 })
+		.withMessage("Stars must be an integer from 1 to 5"),
+	handleValidationErrors,
+];
 
 // Get all Spots
 router.get("/", async (req, res) => {
@@ -129,14 +141,22 @@ router.get("/current", async (req, res) => {
 		res.status(401).json({ message: "Authentication required" });
 	}
 });
-// Get spot by SpotId
+// Get details of a spot by SpotId
 router.get("/:spotId", async (req, res) => {
 	const spot = await Spot.findByPk(req.params.spotId, {
+		attributes: {
+			include: [
+				[Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), "numReviews"],
+				[Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), "avgStarRating"],
+			],
+		},
 		include: [
+			{ model: Review, attributes: [] },
 			{ model: SpotImage, attributes: ["id", "url", "preview"] },
 			{ model: User, as: "Owner", attributes: ["id", "firstName", "lastName"] },
 		],
 	});
+
 	if (spot) {
 		res.json(spot);
 	} else {
@@ -144,7 +164,7 @@ router.get("/:spotId", async (req, res) => {
 	}
 });
 // Create a Spot
-router.post("/", async (req, res) => {
+router.post("/", validateCreation, async (req, res) => {
 	const { user } = req;
 	const { address, city, state, country, lat, lng, name, description, price } =
 		req.body;
@@ -197,7 +217,7 @@ router.post("/:spotId/images", async (req, res) => {
 });
 
 // Edit a spot
-router.put("/:spotId", async (req, res) => {
+router.put("/:spotId", validateCreation, async (req, res) => {
 	const { user } = req;
 	const { address, city, state, country, lat, lng, name, description, price } =
 		req.body;
@@ -250,7 +270,7 @@ router.delete("/:spotId", async (req, res) => {
 });
 
 // Create a review for a spot based on the spot's id
-router.post("/:spotId/reviews", async (req, res) => {
+router.post("/:spotId/reviews", validateReview, async (req, res) => {
 	const { user } = req;
 	const { review, stars } = req.body;
 

@@ -9,9 +9,20 @@ const {
 const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-const { DATE, Model, where } = require("sequelize");
+const { DATE, Model, where, EmptyResultError } = require("sequelize");
 const spotimage = require("../../db/models/spotimage");
 const spot = require("../../db/models/spot");
+
+const validateReview = [
+	check("review")
+		.exists({ checkFalsy: true })
+		.withMessage("Review text is required"),
+	check("stars")
+		.exists({ checkFalsy: true })
+		.isFloat({ min: 1, max: 5 })
+		.withMessage("Stars must be an integer from 1 to 5"),
+	handleValidationErrors,
+];
 
 // Get all reviews by Current user
 router.get("/current", async (req, res) => {
@@ -58,28 +69,38 @@ router.post("/:reviewId/images", async (req, res) => {
 		const { url } = req.body;
 		const review = await Review.findByPk(req.params.reviewId);
 		if (review) {
-			if (review.userId === user.id) {
-				const newImage = await ReviewImage.create({
-					reviewId: review.id,
-					url,
-				});
+			const images = await ReviewImage.findAll({
+				where: { reviewId: review.id },
+			});
+			if (images.length < 10) {
+				if (review.userId === user.id) {
+					const newImage = await ReviewImage.create({
+						reviewId: review.id,
+						url,
+					});
 
-				res.status(201).json({
-					id: newImage.id,
-					url: newImage.url,
-				});
+					res.status(201).json({
+						id: newImage.id,
+						url: newImage.url,
+					});
+				} else {
+					res.status(403).json({ message: "Forbidden" });
+				}
 			} else {
-				res.status(404).json({ message: "Review couldn't be found" });
+				res.status(403).json({
+					message: "Maximum number of images for this resource was reached",
+				});
 			}
-		} // else {
-		// 	res.status(403).json({
-		// 		message: "Maximum number of images for this resource was reached",
-		// 	});
-		// }
+		} else {
+			res.status(404).json({ message: "Review couldn't be found" });
+		}
+	} else {
+		res.status(401).json({ message: "Authentication required" });
 	}
 });
 
-router.put("/:reviewId", async (req, res) => {
+// Edit a review
+router.put("/:reviewId", validateReview, async (req, res) => {
 	const { user } = req;
 	const { review, stars } = req.body;
 	if (user) {
@@ -122,25 +143,24 @@ router.delete("/:reviewId", async (req, res) => {
 	}
 });
 
-
 //Delete a Review
-router.delete("/:reviewId", async(req, res) => {
+router.delete("/:reviewId", async (req, res) => {
 	const { user } = req;
 
-	if ( user ) {
-		const review = await Review.findByPk(req.params.reviewId)
+	if (user) {
+		const review = await Review.findByPk(req.params.reviewId);
 		if (review) {
 			if (user.id === review.userId) {
 				await review.destroy();
-				res.status(200).json({ message: "Successfully deleted"})
+				res.status(200).json({ message: "Successfully deleted" });
 			} else {
-				res.status(403).json({ message: "Forbidden"})
+				res.status(403).json({ message: "Forbidden" });
 			}
 		} else {
-				res.status(404).json({ message: "Review couldn't be found"})
-			}
+			res.status(404).json({ message: "Review couldn't be found" });
+		}
 	} else {
-		res.status(401).json({"message": "Authentication required"});
+		res.status(401).json({ message: "Authentication required" });
 	}
 });
 
