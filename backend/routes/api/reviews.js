@@ -1,5 +1,11 @@
 const express = require("express");
-const { Spot, User, SpotImage, Review, ReviewImage} = require("../../db/models");
+const {
+  Spot,
+  User,
+  SpotImage,
+  Review,
+  ReviewImage,
+} = require("../../db/models");
 const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -39,13 +45,13 @@ router.post("/:reviewId/images", async (req, res) => {
     const { url } = req.body;
     const review = await Review.findByPk(req.params.reviewId);
     if (review) {
-      if (review.reviewId === user.id) {
-        console.log("how about this one")
+      if (review.userId === user.id) {
+        console.log("how about this one");
         const newImage = await ReviewImage.create({
           reviewId: review.id,
           url,
         });
-        console.log("debugggin")
+        console.log("debugggin");
         res.status(201).json({
           id: newImage.id,
           url: newImage.url,
@@ -54,7 +60,9 @@ router.post("/:reviewId/images", async (req, res) => {
         res.status(404).json({ message: "Review couldn't be found" });
       }
     } else {
-      res.status(403).json({ message: "Maximum number of images for this resource was reached"});
+      res.status(403).json({
+          message: "Maximum number of images for this resource was reached",
+        });
     }
   }
 });
