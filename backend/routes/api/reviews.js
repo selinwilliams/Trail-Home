@@ -122,4 +122,26 @@ router.delete("/:reviewId", async (req, res) => {
 	}
 });
 
+
+//Delete a Review
+router.delete("/:reviewId", async(req, res) => {
+	const { user } = req;
+
+	if ( user ) {
+		const review = await Review.findByPk(req.params.reviewId)
+		if (review) {
+			if (user.id === review.userId) {
+				await review.destroy();
+				res.status(200).json({ message: "Successfully deleted"})
+			} else {
+				res.status(403).json({ message: "Forbidden"})
+			}
+		} else {
+				res.status(404).json({ message: "Review couldn't be found"})
+			}
+	} else {
+		res.status(401).json({"message": "Authentication required"});
+	}
+});
+
 module.exports = router;
