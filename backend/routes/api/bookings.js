@@ -9,7 +9,7 @@ const spot = require("../../db/models/spot");
 
 //Get all of the Current User's Bookings
 router.get("/current", async (req, res) => {
-  const user = req;
+  const { user } = req;
   if (user) {
     const bookings = await Booking.findAll({
       where: { userId: user.id },
@@ -27,13 +27,13 @@ router.get("/current", async (req, res) => {
     let Bookings = [];
     bookings.forEach((booking) => Bookings.push(booking.toJSON()));
     Bookings.forEach((review) => {
-      review.Spot.SpotImage.forEach((image) => {
+
+      review.Spot.SpotImages.forEach((image) => {
         if (image.preview === true) {
           review.Spot.previewImage = image.url;
-        //   delete review.Spot.SpotImage;
+          delete review.Spot.SpotImages;
         }
       });
-      review.Spot.previewImage = "no preview";
     });
     res.status(200).json({ Bookings });
   }

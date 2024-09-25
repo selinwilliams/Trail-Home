@@ -282,11 +282,18 @@ router.get("/:spotId/reviews", async (req, res) => {
 			if ( spot.ownerId === user.id ) {
 				const booking = await Booking.findAll({
 					where: { spotId: spot.id },
-					include: { model: Spot }
+					include: { model: User, attributes: ["id", "firstName", "lastName"]},
 				})
 				res.json(booking);
+			} else {
+				const booking = await Booking.findAll({attributes: ["spotId","startDate", "endDate"]})
+				res.json({booking})
 			}
+		} else {
+			res.status(404).json({ message: "Spot couldn't be found"})
 		}
+	} else {
+		res.status(401).json({message: "Authentication required"})
 	}
  });
 
