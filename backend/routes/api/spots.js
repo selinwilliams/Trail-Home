@@ -8,6 +8,7 @@ const {
 	Sequelize,
 } = require("../../db/models");
 const router = express.Router();
+const { Op } = require("sequelize");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { DATE, Model, where } = require("sequelize");
