@@ -1,5 +1,7 @@
 "use strict";
-const { SpotImage } = require("../models");
+
+const { Booking } = require("../models");
+
 let options = {};
 if (process.env.NODE_ENV === "production") {
 	options.schema = process.env.SCHEMA; // define your schema in options object
@@ -8,22 +10,18 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await SpotImage.bulkCreate([
+		await Booking.bulkCreate([
 			{
 				spotId: 1,
-				url: "image url",
-				preview: true,
-			},
-			{
-				spotId: 1,
-				url: "image url",
-				preview: false,
+				userId: 2,
+				startDate: "2021-11-19",
+				endDate: "2021-11-20",
 			},
 		]);
 	},
 
 	async down(queryInterface, Sequelize) {
-		options.tableName = "SpotImages";
+		options.tableName = "Bookings";
 		return queryInterface.bulkDelete(options, null, {});
 	},
 };
