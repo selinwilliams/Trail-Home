@@ -11,12 +11,12 @@ module.exports = {
 		await SpotImage.bulkCreate([
 			{
 				spotId: 1,
-				url: "image 1 url",
+				url: "image url",
 				preview: true,
 			},
 			{
 				spotId: 1,
-				url: "image 2 url",
+				url: "image url",
 				preview: false,
 			},
 		]);

@@ -181,7 +181,7 @@ router.post("/", validateCreation, async (req, res) => {
 			description,
 			price,
 		});
-		res.status(201).json({ newSpot });
+		res.status(201).json(newSpot);
 	} else {
 		res.status(401).json({ message: "Authentication required" });
 	}
@@ -277,7 +277,9 @@ router.post("/:spotId/reviews", validateReview, async (req, res) => {
 	if (user) {
 		const spot = await Spot.findByPk(req.params.spotId);
 		if (spot) {
-			const reviews = await Review.findOne({ where: { userId: user.id } });
+			const reviews = await Review.findOne({
+				where: { spotId: spot.id, userId: user.id },
+			});
 			if (reviews) {
 				res
 					.status(500)
@@ -304,7 +306,7 @@ router.get("/:spotId/reviews", async (req, res) => {
 		where: { spotId: req.params.spotId },
 		include: [
 			{ model: User, attributes: ["id", "firstName", "lastName"] },
-			{ model: ReviewImage },
+			{ model: ReviewImage, attributes: ["id", "url"] },
 		],
 	});
 	if (spot) {
@@ -326,12 +328,54 @@ router.get("/:spotId/bookings", async (req, res) => {
 					where: { spotId: spot.id },
 					include: { model: User, attributes: ["id", "firstName", "lastName"] },
 				});
-				res.json(booking);
+
+				const Bookings = booking.map((value) => {
+					const startDate = value.startDate;
+					const endDate = value.endDate;
+					return {
+						User: {
+							id: value.User.id,
+							firstName: value.User.firstName,
+							lastName: value.User.lastName,
+						},
+						id: value.id,
+						spotId: spot.id,
+						userId: value.userId,
+						startDate: `${startDate.getFullYear()}-${
+							startDate.getMonth() + 1
+						}-${startDate.getDate()}`,
+						endDate: `${endDate.getFullYear()}-${
+							endDate.getMonth() + 1
+						}-${endDate.getDate()}`,
+						createdAt: `${value.createdAt.getFullYear()}-${
+							value.createdAt.getMonth() + 1
+						}-${value.createdAt.getDate()}`,
+						updatedAt: `${value.updatedAt.getFullYear()}-${
+							value.updatedAt.getMonth() + 1
+						}-${value.updatedAt.getDate()}`,
+					};
+				});
+				res.json({ Bookings });
 			} else {
 				const booking = await Booking.findAll({
+					where: { spotId: spot.id },
 					attributes: ["spotId", "startDate", "endDate"],
 				});
-				res.json({ booking });
+				const Bookings = booking.map((value) => {
+					const startDate = value.startDate;
+					const endDate = value.endDate;
+					console.log(startDate);
+					return {
+						spotId: spot.id,
+						startDate: `${startDate.getFullYear()}-${
+							startDate.getMonth() + 1
+						}-${startDate.getDate()}`,
+						endDate: `${endDate.getFullYear()}-${
+							endDate.getMonth() + 1
+						}-${endDate.getDate()}`,
+					};
+				});
+				res.json({ Bookings });
 			}
 		} else {
 			res.status(404).json({ message: "Spot couldn't be found" });
@@ -341,7 +385,7 @@ router.get("/:spotId/bookings", async (req, res) => {
 	}
 });
 
-//Create a Booking from a Spot based on the Spot's id
+// Create a Booking from a Spot based on the Spot's id
 router.post("/:spotId/bookings", async (req, res) => {
 	const { user } = req;
 	const { startDate, endDate } = req.body;

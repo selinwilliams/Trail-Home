@@ -1,27 +1,24 @@
 "use strict";
 
-const { Booking } = require("../models");
+const { ReviewImage } = require("../models");
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
 	options.schema = process.env.SCHEMA; // define your schema in options object
 }
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await Booking.bulkCreate([
+		await ReviewImage.bulkCreate([
 			{
-				spotId: 1,
-				userId: 2,
-				startDate: "2021-11-19",
-				endDate: "2021-11-20",
+				reviewId: "1",
+				url: "image url",
 			},
 		]);
 	},
 
 	async down(queryInterface, Sequelize) {
-		options.tableName = "Bookings";
+		options.tableName = "ReviewImages";
 		return queryInterface.bulkDelete(options, null, {});
 	},
 };
