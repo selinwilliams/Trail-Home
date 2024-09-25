@@ -27,7 +27,6 @@ router.get("/current", async (req, res) => {
     let Bookings = [];
     bookings.forEach((booking) => Bookings.push(booking.toJSON()));
     Bookings.forEach((review) => {
-
       review.Spot.SpotImages.forEach((image) => {
         if (image.preview === true) {
           review.Spot.previewImage = image.url;
@@ -39,5 +38,32 @@ router.get("/current", async (req, res) => {
   }
 });
 
+
+//Edit a booking
+router.put("/:bookingId", async (req, res) => {
+    const { user } = req;
+    const { startDate, endDate } = req.body;
+
+    if (user) {
+        const booking = await Booking.findByPk(req.params.bookingId);
+        if (booking.endDate < new Date()) {
+            res.status(403).json({ message: "Past bookings can't be modified" });
+        }
+        if (booking) {
+            if (booking.id === user.id) {
+                const updatedBooking = await booking.update({
+                    startDate: startDate,
+                    endDate: endDate,
+                    updatedAt: new Date(),
+                })
+                res.json(updatedBooking);
+            } else {
+                res.status(403).json({message: "Forbidden"});
+            }
+        } else {
+            res.status(404).json({message: "Booking couldn't be found"});
+        }
+    }
+});
 
 module.exports = router;
