@@ -9,9 +9,6 @@ const {
 const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-const { DATE, Model, where, EmptyResultError } = require("sequelize");
-const spotimage = require("../../db/models/spotimage");
-const spot = require("../../db/models/spot");
 
 const validateReview = [
 	check("review")
@@ -37,27 +34,53 @@ router.get("/current", async (req, res) => {
 				},
 				{
 					model: Spot,
-					include: { model: SpotImage },
+					include: { model: SpotImage, where: { preview: true } },
 					attributes: { exclude: ["description", "createdAt", "updatedAt"] },
 				},
-				{ model: ReviewImage, attributes: ["id", "url"] },
+				{
+					model: ReviewImage,
+					attributes: ["id", "url"],
+				},
 			],
 		});
-		// TRYING TO GET PREVIEW IMAGE URL TO SHOW !!!!!
 		let Reviews = [];
-		reviews.forEach((review) => Reviews.push(review.toJSON()));
-		Reviews.forEach((review) => {
-			review.Spot.SpotImages.forEach((image) => {
-				if (image.preview === true) {
-					review.Spot.previewImage = image.url;
-					delete review.Spot.SpotImages;
-				}
+		if (reviews) {
+			reviews.map((review) => {
+				Reviews.push({
+					id: review.id,
+					userId: review.userId,
+					spotId: review.spotId,
+					review: review.review,
+					stars: review.stars,
+					createdAt: `${review.createdAt.getFullYear()}-${
+						review.createdAt.getMonth() + 1
+					}-${review.createdAt.getDate()} ${review.createdAt.getHours()}:${review.createdAt.getMinutes()}:${review.createdAt.getSeconds()}`,
+					updatedAt: `${review.updatedAt.getFullYear()}-${
+						review.updatedAt.getMonth() + 1
+					}-${review.updatedAt.getDate()} ${review.updatedAt.getHours()}:${review.updatedAt.getMinutes()}:${review.updatedAt.getSeconds()}`,
+					User: review.User,
+					Spot: {
+						id: review.Spot.id,
+						ownerId: review.Spot.ownerId,
+						address: review.Spot.address,
+						city: review.Spot.city,
+						state: review.Spot.state,
+						country: review.Spot.country,
+						lat: review.Spot.lat,
+						lng: review.Spot.lng,
+						name: review.Spot.name,
+						price: review.Spot.price,
+						previewImage: review.Spot.SpotImages[0].url,
+					},
+					ReviewImages: review.ReviewImages,
+				});
 			});
-
-			review.Spot.previewImage = "no preview url";
-		});
-
-		res.json({ reviews });
+			res.status(200).json({ Reviews });
+		} else {
+			res.status(404).json({ message: "Couldn't find any reviews" });
+		}
+	} else {
+		res.status(401).json({ message: "Authentication required" });
 	}
 });
 
@@ -112,7 +135,21 @@ router.put("/:reviewId", validateReview, async (req, res) => {
 					stars,
 					updatedAt: new Date(),
 				});
-				res.json(updatedReview);
+
+				const formattedRes = {
+					id: updatedReview.id,
+					userId: updatedReview.userId,
+					spotId: updatedReview.spotId,
+					review: updatedReview.review,
+					stars: updatedReview.stars,
+					createdAt: `${updatedReview.createdAt.getFullYear()}-${
+						updatedReview.createdAt.getMonth() + 1
+					}-${updatedReview.createdAt.getDate()} ${updatedReview.createdAt.getHours()}:${updatedReview.createdAt.getMinutes()}:${updatedReview.createdAt.getSeconds()}`,
+					updatedAt: `${updatedReview.updatedAt.getFullYear()}-${
+						updatedReview.updatedAt.getMonth() + 1
+					}-${updatedReview.updatedAt.getDate()} ${updatedReview.updatedAt.getHours()}:${updatedReview.updatedAt.getMinutes()}:${updatedReview.updatedAt.getSeconds()}`,
+				};
+				res.json(formattedRes);
 			} else {
 				res.status(403).json({ message: "Forbidden" });
 			}
