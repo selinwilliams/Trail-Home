@@ -11,9 +11,9 @@ const {
 const router = express.Router();
 const { Op } = require("sequelize");
 const { check } = require("express-validator");
+const { query } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { DATE, Model, where } = require("sequelize");
-const { selectFields } = require("express-validator/lib/field-selection");
 
 const validateCreation = [
 	check("address")
@@ -26,10 +26,12 @@ const validateCreation = [
 		.withMessage("Country is required"),
 	check("lat")
 		.exists({ checkFalsy: true })
+		.isDecimal()
 		.isFloat({ min: -90, max: 90 })
 		.withMessage("Latitude must be within -90 and 90"),
 	check("lng")
 		.exists({ checkFalsy: true })
+		.isDecimal()
 		.isFloat({ min: -180, max: 180 })
 		.withMessage("Longitude must be within -180 and 180"),
 	check("name")
@@ -41,6 +43,7 @@ const validateCreation = [
 		.withMessage("Description is required"),
 	check("price")
 		.exists({ checkFalsy: true })
+		.isInt()
 		.custom((value) => (value >= 0 ? true : false))
 		.withMessage("Price per day must be a positive number"),
 	handleValidationErrors,
@@ -57,44 +60,117 @@ const validateReview = [
 	handleValidationErrors,
 ];
 
+const validateSpotQueries = [
+	query("page")
+		.optional()
+		.isFloat({ min: 1 })
+		// .default({ default_value: 1 })
+		.withMessage("Page must be greated than or equal to 1"),
+	query("size")
+		.optional()
+		.isFloat({ min: 1, max: 20 })
+		// .default({ default_value: 20 })
+		.withMessage("Size must be between 1 and 20"),
+	query("maxLat")
+		.optional()
+		.isFloat({ max: 90 })
+		.withMessage("Maximum latitude is invalid"),
+	query("minLat")
+		.optional()
+		.isFloat({ min: -90 })
+		.withMessage("Minimum latitude is invalid"),
+	query("minLng")
+		.optional()
+		.isFloat({ min: -180 })
+		.withMessage("Minimum longitude is invalid"),
+	query("maxLng")
+		.optional()
+		.isDecimal()
+		.isFloat({ max: 180 })
+		.withMessage("Maxium longitude is invalid"),
+	query("minPrice")
+		.optional()
+		.isFloat({ min: 0 })
+		.withMessage("Minimum price must be greater than or equal to 0"),
+	query("maxPrice")
+		.optional()
+		.isFloat({ min: 0 })
+		.withMessage("Maximum price must be greater than or equal to 0"),
+	handleValidationErrors,
+];
+
 // Get all Spots
-router.get("/", async (req, res) => {
-	const spots = await Spot.findAll({
+router.get("/", validateSpotQueries, async (req, res) => {
+	let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
+		req.query;
+
+	let query = {
+		where: {},
 		include: [{ model: SpotImage }, { model: Review }],
-	});
+	};
 
-	// Mutate Spots object to add Avg Rating, previewImage
+	if (page === undefined) {
+		page = 1;
+	} else {
+		page = parseInt(page);
+	}
+
+	if (size === undefined) {
+		size = 20;
+	} else {
+		size = parseInt(size);
+	}
+
+	if (page >= 1 && size >= 1) {
+		query.limit = size;
+		query.offset = size * (page - 1);
+	}
+
+	if (minLat) query.where.lat = { [Op.gte]: minLat };
+	if (maxLat) query.where.lat = { [Op.lte]: maxLat };
+	if (maxLng) query.where.lng = { [Op.lte]: maxLat };
+	if (minLng) query.where.lng = { [Op.gte]: minLat };
+	if (minPrice) query.where.price = { [Op.gte]: minPrice };
+	if (maxPrice) query.where.price = { [Op.lte]: maxPrice };
+
+	const spots = await Spot.findAll(query);
+
 	let Spots = [];
-	spots.forEach((spot) => {
-		Spots.push(spot.toJSON());
+
+	spots.map((spot) => {
+		let count = 0;
+		let previewUrl = "no preview url";
+		spot.Reviews.forEach((review) => (count += review.stars));
+		spot.SpotImages.forEach((image) =>
+			image.preview === true
+				? (previewUrl = image.url)
+				: (previewUrl = "no preview url")
+		);
+		Spots.push({
+			id: spot.id,
+			ownerId: spot.ownerId,
+			address: spot.address,
+			city: spot.city,
+			state: spot.state,
+			country: spot.country,
+			lat: spot.lat,
+			lng: spot.lng,
+			name: spot.name,
+			description: spot.description,
+			price: spot.price,
+			createdAt: `${spot.createdAt.getFullYear()}-${
+				spot.createdAt.getMonth() + 1
+			}-${spot.createdAt.getDate()} ${spot.createdAt.getHours()}:${spot.createdAt.getMinutes()}:${spot.createdAt.getSeconds()}`,
+			updatedAt: `${spot.updatedAt.getFullYear()}-${
+				spot.updatedAt.getMonth() + 1
+			}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
+			// Need to come back and fix this
+			avgRating: count / spot.Reviews.length || 0,
+			previewImage: previewUrl,
+		});
 	});
 
-	Spots.forEach((spot) => {
-		// Grab all reviews
-		if (spot.Reviews.length) {
-			let count = 0;
-			// Iterate through reviews to find star count
-			spot.Reviews.forEach((review) => {
-				count += review.stars;
-			});
-			spot.avgRating = count / spot.Reviews.length;
-		} else {
-			spot.avgRating = 0;
-		}
-		if (spot.SpotImages.length) {
-			spot.SpotImages.forEach((image) => {
-				if (image.preview === true) {
-					spot.previewImage = image.url;
-				}
-			});
-		} else {
-			spot.previewImage = "no preview url";
-		}
-		delete spot.SpotImages;
-		delete spot.Reviews;
-	});
-
-	res.json({ Spots });
+	res.json({ Spots, page: page, size: size });
 });
 // Get all Spots owned by the Current User
 router.get("/current", async (req, res) => {
@@ -103,22 +179,23 @@ router.get("/current", async (req, res) => {
 	if (user) {
 		const spots = await Spot.findAll({
 			where: { ownerId: user.id },
-			include: [
-				{ model: SpotImage, where: { preview: true } },
-				{ model: Review },
-			],
+			include: [{ model: SpotImage }, { model: Review }],
 		});
 
 		let Spots = [];
 		spots.map((spot) => {
-			// const ratings = spot.Reviews.reduce((a, b) => a.stars + b.stars, 0);
-			// console.log(ratings);
+			let count = 0;
+			let previewUrl = "no preview url";
+			spot.Reviews.forEach((review) => (count += review.stars));
+			spot.SpotImages.forEach((image) =>
+				image.preview === true
+					? (previewUrl = image.url)
+					: (previewUrl = "no preview url")
+			);
 			Spots.push({
 				id: spot.id,
 				ownerId: spot.ownerId,
 				address: spot.address,
-				city: spot.city,
-				state: spot.state,
 				city: spot.city,
 				state: spot.state,
 				country: spot.country,
@@ -127,11 +204,15 @@ router.get("/current", async (req, res) => {
 				name: spot.name,
 				description: spot.description,
 				price: spot.price,
-				createdAt: spot.id,
-				updatedAt: spot.id,
+				createdAt: `${spot.createdAt.getFullYear()}-${
+					spot.createdAt.getMonth() + 1
+				}-${spot.createdAt.getDate()} ${spot.createdAt.getHours()}:${spot.createdAt.getMinutes()}:${spot.createdAt.getSeconds()}`,
+				updatedAt: `${spot.updatedAt.getFullYear()}-${
+					spot.updatedAt.getMonth() + 1
+				}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
 				// Need to come back and fix this
-				avgRating: 5,
-				previewImage: spot.SpotImages[0].url,
+				avgRating: count / spot.Reviews.length || 0,
+				previewImage: previewUrl,
 			});
 		});
 

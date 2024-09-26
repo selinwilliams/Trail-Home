@@ -34,7 +34,7 @@ router.get("/current", async (req, res) => {
 				},
 				{
 					model: Spot,
-					include: { model: SpotImage, where: { preview: true } },
+					include: { model: SpotImage },
 					attributes: { exclude: ["description", "createdAt", "updatedAt"] },
 				},
 				{
@@ -46,6 +46,10 @@ router.get("/current", async (req, res) => {
 		let Reviews = [];
 		if (reviews) {
 			reviews.map((review) => {
+				let previewImage = "no preview image";
+				review.Spot.SpotImages.forEach((image) =>
+					image.preview === true ? (previewImage = image.url) : previewImage
+				);
 				Reviews.push({
 					id: review.id,
 					userId: review.userId,
@@ -70,7 +74,7 @@ router.get("/current", async (req, res) => {
 						lng: review.Spot.lng,
 						name: review.Spot.name,
 						price: review.Spot.price,
-						previewImage: review.Spot.SpotImages[0].url,
+						previewImage: previewImage,
 					},
 					ReviewImages: review.ReviewImages,
 				});
