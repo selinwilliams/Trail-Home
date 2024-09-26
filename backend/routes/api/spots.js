@@ -524,7 +524,7 @@ router.get("/:spotId/bookings", async (req, res) => {
 				const Bookings = booking.map((value) => {
 					const startDate = value.startDate;
 					const endDate = value.endDate;
-					console.log(startDate);
+
 					return {
 						spotId: spot.id,
 						startDate: `${startDate.getFullYear()}-${

@@ -148,7 +148,6 @@ router.delete("/:bookingId", async (req, res) => {
 	const { user } = req;
 	if (user) {
 		const booking = await Booking.findByPk(req.params.bookingId);
-		console.log(booking);
 
 		if (booking) {
 			if (booking.userId === user.id || spot.ownerId === user.id) {
