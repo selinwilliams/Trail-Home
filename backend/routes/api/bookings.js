@@ -17,22 +17,43 @@ router.get("/current", async (req, res) => {
 			include: [
 				{
 					model: Spot,
-					include: { model: SpotImage },
+					include: {
+						model: SpotImage,
+						where: { preview: true },
+					},
 					attributes: {
 						exclude: ["createdAt", "updatedAt"],
 					},
 				},
 			],
 		});
-
-		let Bookings = [];
-		bookings.forEach((booking) => Bookings.push(booking.toJSON()));
-		Bookings.forEach((review) => {
-			review.Spot.SpotImages.forEach((image) => {
-				if (image.preview === true) {
-					review.Spot.previewImage = image.url;
-					delete review.Spot.SpotImages;
-				}
+		const Bookings = [];
+		const formatRes = bookings.map((value) => {
+			Bookings.push({
+				id: value.id,
+				spotId: value.spotId,
+				Spot: {
+					id: value.Spot.id,
+					ownerId: value.Spot.ownerId,
+					address: value.Spot.address,
+					city: value.Spot.city,
+					state: value.Spot.state,
+					country: value.Spot.country,
+					lat: value.Spot.lat,
+					lng: value.Spot.lng,
+					name: value.Spot.name,
+					price: value.Spot.price,
+					previewImage: value.Spot.SpotImages[0].url,
+				},
+				userId: value.userId,
+				startDate: value.startDate.toJSON().slice(0, 10),
+				endDate: value.endDate.toJSON().slice(0, 10),
+				createdAt: `${value.createdAt.getFullYear()}-${
+					value.createdAt.getMonth() + 1
+				}-${value.createdAt.getDate()} ${value.createdAt.getHours()}:${value.createdAt.getMinutes()}:${value.createdAt.getSeconds()}`,
+				updatedAt: `${value.updatedAt.getFullYear()}-${
+					value.updatedAt.getMonth() + 1
+				}-${value.updatedAt.getDate()} ${value.updatedAt.getHours()}:${value.updatedAt.getMinutes()}:${value.updatedAt.getSeconds()}`,
 			});
 		});
 		res.status(200).json({ Bookings });
@@ -72,7 +93,6 @@ router.put("/:bookingId", async (req, res) => {
 
 		if (booking) {
 			const currentDate = new Date();
-
 			if (new Date(startDate) < currentDate) {
 				return res.status(400).json({
 					message: "Bad Request",
@@ -97,7 +117,21 @@ router.put("/:bookingId", async (req, res) => {
 					endDate: endDate,
 					updatedAt: new Date(),
 				});
-				res.json(updatedBooking);
+
+				const formatRes = {
+					id: updatedBooking.id,
+					spotId: updatedBooking.spotId,
+					userId: updatedBooking.userId,
+					startDate: startDate,
+					endDate: endDate,
+					createdAt: `${updatedBooking.createdAt.getFullYear()}-${
+						updatedBooking.createdAt.getMonth() + 1
+					}-${updatedBooking.createdAt.getDate()} ${updatedBooking.createdAt.getHours()}:${updatedBooking.createdAt.getMinutes()}:${updatedBooking.createdAt.getSeconds()}`,
+					updatedAt: `${updatedBooking.updatedAt.getFullYear()}-${
+						updatedBooking.updatedAt.getMonth() + 1
+					}-${updatedBooking.updatedAt.getDate()} ${updatedBooking.updatedAt.getHours()}:${updatedBooking.updatedAt.getMinutes()}:${updatedBooking.updatedAt.getSeconds()}`,
+				};
+				res.json(formatRes);
 			} else {
 				res.status(403).json({ message: "Forbidden" });
 			}
