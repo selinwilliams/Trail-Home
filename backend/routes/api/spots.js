@@ -153,11 +153,11 @@ router.get("/", validateSpotQueries, async (req, res) => {
 			city: spot.city,
 			state: spot.state,
 			country: spot.country,
-			lat: spot.lat,
-			lng: spot.lng,
+			lat: Number(spot.lat),
+			lng: Number(spot.lng),
 			name: spot.name,
 			description: spot.description,
-			price: spot.price,
+			price: Number(spot.price),
 			createdAt: `${spot.createdAt.getFullYear()}-${
 				spot.createdAt.getMonth() + 1
 			}-${spot.createdAt.getDate()} ${spot.createdAt.getHours()}:${spot.createdAt.getMinutes()}:${spot.createdAt.getSeconds()}`,
