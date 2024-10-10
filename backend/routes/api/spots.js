@@ -128,8 +128,8 @@ router.get("/", validateSpotQueries, async (req, res) => {
 
 	if (minLat) query.where.lat = { [Op.gte]: minLat };
 	if (maxLat) query.where.lat = { [Op.lte]: maxLat };
-	if (maxLng) query.where.lng = { [Op.lte]: maxLat };
-	if (minLng) query.where.lng = { [Op.gte]: minLat };
+	if (maxLng) query.where.lng = { [Op.lte]: maxLng };
+	if (minLng) query.where.lng = { [Op.gte]: minLng };
 	if (minPrice) query.where.price = { [Op.gte]: minPrice };
 	if (maxPrice) query.where.price = { [Op.lte]: maxPrice };
 
