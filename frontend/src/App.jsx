@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import LoginFormPage from './components/LoginFormPage';
 import * as sessionActions from './store/session';
 import SignupFormPage from './components/SignupFormPage/SignupFormPage';
-
+import Navigation from './components/Navigation/Navigation';
 
 function Layout() {
   const dispatch = useDispatch();
