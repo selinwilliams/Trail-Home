@@ -1,0 +1,78 @@
+/* Container for centering the login form */
+form {
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+    justify-content: center;
+    align-items: center;
+    max-width: 400px; /* Limit the width of the form */
+    margin: auto; /* Center the form horizontally */
+    padding: 2rem;
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  }
+  
+  /* Body background color */
+  body {
+    background-color: #f7f7f7; /* Light gray background for the page */
+  }
+  
+  /* Form heading */
+  h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #ff385c; /* Airbnb's signature coral color */
+  }
+  
+  /* Label styling */
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #333; /* Dark gray for the labels */
+  }
+  
+  /* Input fields styling */
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #d1d1d1; /* Light gray border */
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; /* Include padding in the width calculation */
+  }
+  
+  /* Focus state for input fields */
+  input:focus {
+    border-color: #ff385c; /* Coral border on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 56, 92, 0.25); /* Slight glow effect */
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: #e74c3c; /* Red for error messages */
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Button styling */
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #ff385c; /* Airbnb's coral background */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #ff2c4b; /* Darker coral on hover */
+  }
+  

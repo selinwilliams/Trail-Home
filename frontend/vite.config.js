@@ -10,8 +10,15 @@ export default defineConfig(({ mode }) => ({
       lintOnStart: true,
       failOnError: mode === "production"
     })
+    
   ],
-  // To automatically open the app in the browser whenever the server starts,
+  server: {
+    proxy: {
+      '/api': 'http://localhost:8000'
+    },
+  }
+  
+    // To automatically open the app in the browser whenever the server starts,
   // uncomment the following lines:
   // server: {
   //   open: true
