@@ -1,0 +1,46 @@
+/* Profile button icon */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  button:hover {
+    color: #007BFF; /* Change color on hover */
+  }
+  
+  /* Dropdown menu */
+  .profile-dropdown {
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    list-style: none;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+  }
+  
+  .profile-dropdown.hidden {
+    display: none;
+  }
+  
+  /* Dropdown items */
+  .profile-dropdown li {
+    padding: 8px 10px;
+  }
+  
+  .profile-dropdown li button {
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+  }
+  
+  .profile-dropdown li button:hover {
+    text-decoration: underline;
+  }
+  
