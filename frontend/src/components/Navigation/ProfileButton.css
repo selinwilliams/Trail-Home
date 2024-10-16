@@ -25,7 +25,7 @@ button {
   }
   
   .profile-dropdown.hidden {
-    display: none;
+    display: none
   }
   
   /* Dropdown items */
@@ -44,3 +44,23 @@ button {
     text-decoration: underline;
   }
   
+  .oval-button {
+    display: flex;
+    justify-content: center;      
+    align-items: center;          
+    width: 90px;
+    height: 50px;               
+    border-radius: 25px;   
+    background-color: #fff;      
+    border: 1px solid #ddd;      
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+    cursor: pointer;   
+    gap: 10px;          
+  }
+  
+  .icon {
+    color: #333;
+  }
+  .oval-button:hover {
+    background-color: #f7f7f7;    
+  }

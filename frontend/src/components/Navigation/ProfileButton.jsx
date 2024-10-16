@@ -5,7 +5,8 @@ import * as sessionActions from '../../store/session';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import OpenModalMenuItem from './OpenModelMenuItem';
-import { IoIosMenu } from "react-icons/io";
+import { RxHamburgerMenu } from "react-icons/rx";
+import './ProfileButton.css'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -39,13 +40,28 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
+  const FaUser = () => {
+    return (
+      <div style={{ color: "orange", fontSize: "30px" }}>
+        <FaUserCircle />
+      </div>
+    );
+  };
+
+  const HamburgerMenu = () => {
+    return (
+      <div style={{color: "black", fontSize: "18px"}}>
+        <RxHamburgerMenu/>
+      </div>
+    );
+  };
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <IoIosMenu />
-        <FaUserCircle />
+      <button className='oval-button' onClick={toggleMenu}>
+         <HamburgerMenu className='icon' />
+        <FaUser className='icon' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
