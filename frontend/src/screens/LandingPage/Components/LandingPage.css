@@ -1,0 +1,72 @@
+.spotSection {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 4fr));
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+  }
+  
+  .spot-card {
+    max-width: 250px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .spotCardPrice {
+    font-weight: bold;
+  }
+  
+  .spotCardInfoImg {
+    height: 15rem;
+    width: 15rem;
+  }
+  
+  .spotCardText {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .starRating {
+    width: 70px;
+    display: flex;
+    justify-content: end;
+  }
+  
+  .tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    background-color: #192733;
+    border-radius: 10px;
+    padding: 10px 15px 10px 15px;
+    margin-left: 170px;
+  }
+  
+  .tooltip-text::before {
+    content: "";
+    position: absolute;
+    transform: rotate(45deg);
+    background-color: #192733;
+    padding: 5px;
+    z-index: 1;
+  }
+  
+  .spot-card:hover .tooltip-text {
+    visibility: visible;
+  }
+  
+  #top {
+    top: -40px;
+    left: -50%;
+  }
+  
+  #top::before {
+    top: 80%;
+    left: 45%;
+  }

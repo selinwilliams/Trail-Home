@@ -1,79 +1,101 @@
-/* Basic styles for the container */
-h1 {
-  text-align: center; /* Center the heading */
-  font-family: 'Arial', sans-serif; /* Use a professional font */
-  color: #333; /* Dark color for text */
-  margin-bottom: 20px; /* Space below the heading */
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-/* Style for the form */
+.sign-up h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #222222;
+}
+
+/* Form styling */
 form {
-  display: flex; /* Flexbox for layout */
-  flex-direction: column; /* Stack children vertically */
-  max-width: 400px; /* Set maximum width */
-  margin: 0 auto; /* Center form */
-  padding: 20px; /* Padding for inner space */
-  border: 1px solid #ccc; /* Light gray border */
-  border-radius: 5px; /* Slightly rounded corners */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  background-color: #f9f9f9; /* Light background color */
+  width: 100%;
 }
 
-/* Label styles */
-label {
-  margin: 10px 0 5px; /* Spacing around labels */
-  font-size: 16px; /* Font size for labels */
-  color: #555; /* Slightly lighter color for text */
+form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #222222;
+  margin-bottom: 12px;
 }
 
-/* Input field styles */
-input {
-  padding: 10px; /* Inner padding */
-  border: 1px solid #ccc; /* Light gray border */
-  border-radius: 5px; /* Rounded corners */
-  font-size: 14px; /* Font size for input text */
-  outline: none; /* Remove default outline */
-  transition: border 0.3s; /* Smooth transition for border */
+form input {
+  height: 48px;
+  padding: 12px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #484848;
+  transition: border-color 0.2s ease;
 }
 
-/* Input focus styles */
-input:focus {
-  border-color: #007bff; /* Change border color on focus */
+form input:focus {
+  border-color: #008489;
+  outline: none;
 }
 
-/* Error message styles */
-p {
-  color: red; /* Red color for error messages */
-  font-size: 14px; /* Font size for error messages */
-  margin: 5px 0; /* Margin around error messages */
+form input::placeholder {
+  color: #999999;
 }
 
-/* Button styles */
+form p {
+  font-size: 12px;
+  color: #d93900;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+/* Button styling */
 button {
-  margin-top: 15px; /* Space above the button */
-  padding: 10px; /* Inner padding */
-  background-color: #007bff; /* Blue background color */
-  color: white; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  font-size: 16px; /* Font size for button */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  width: 100%;
+  padding: 14px;
+  background-color: #FF5A5F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 16px;
 }
 
-/* Button hover effect */
-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+button:disabled {
+  background-color: #dddddd;
+  cursor: not-allowed;
 }
 
-/* Responsive styles */
-@media (max-width: 480px) {
-  /* Stack elements vertically on smaller screens */
-  form {
-    width: 90%; /* Full width on smaller screens */
+button:hover:enabled {
+  background-color: #FF5A5F;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+  .sign-up {
+    padding: 16px;
+    max-width: 100%;
   }
 
-  h1 {
-    font-size: 24px; /* Adjust font size for heading */
+  form input {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
   }
 }

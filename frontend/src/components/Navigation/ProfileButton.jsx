@@ -42,7 +42,7 @@ function ProfileButton({ user }) {
 
   const FaUser = () => {
     return (
-      <div style={{ color: "orange", fontSize: "30px" }}>
+      <div style={{ color: "#999999", fontSize: "30px" }}>
         <FaUserCircle />
       </div>
     );
@@ -59,33 +59,37 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button className='oval-button' onClick={toggleMenu}>
+      <button data-testid='user-menu-button' className='oval-button' onClick={toggleMenu}>
          <HamburgerMenu className='icon' />
         <FaUser className='icon' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <li>Hello, {user.username}</li>
+            {/* <li>{user.firstName} {user.lastName}</li> */}
             <li>{user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>
           </>
         ) : (
-          <>
+          <div className='not-logged'>
+              <div className='login-profile'>
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
+              </div>
+              <div className='signup-modal'>
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-          </>
+              </div>
+          </div>
         )}
       </ul>
     </>

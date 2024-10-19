@@ -11,7 +11,7 @@ module.exports = {
 		await SpotImage.bulkCreate([
 			{
 				spotId: 1,
-				url: "image url",
+				url: "https://media.vrbo.com/lodging/21000000/20150000/20144400/20144303/a7c4d893.jpg?impolicy=resizecrop&rw=1200&ra=fit",
 				preview: true,
 			},
 			{

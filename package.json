@@ -13,5 +13,11 @@
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"sequelize": "^6.37.4"
+	},
+	"devDependencies": {
+		"sequelize-cli": "^6.6.2"
+	}
 }

@@ -1,8 +1,14 @@
+import Header from './components/Header/Header'
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
+import CreateASpot from './screens/CreateASpot/CreateASpot';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import SpotDetails from './screens/SpotDetails/components/SpotDetails'
+import ManageSpots from './screens/ManageSpots/ManageSpots';
+import UpdateASpot from './screens/UpdateASpot/UpdateASpot';
+import LandingPage from './screens/LandingPage/Components/LandingPage';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -16,19 +22,39 @@ function Layout() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Header isLoaded={isLoaded}/>
       {isLoaded && <Outlet />}
     </>
   );
 }
-
+  
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <LandingPage/>
+      },
+      {
+        path: '/spots/:id',
+        element: <SpotDetails />
+      },
+      {
+        path: '/spots',
+        element: <CreateASpot />
+      },
+      {
+        path: '/spots/manage',
+        element: <ManageSpots />
+      },
+      {
+        path: '/spots/:id/update',
+        element: <UpdateASpot />
+      },
+      {
+        path: '/*',
+        element: <NotFoundPage />
       }
     ]
   }

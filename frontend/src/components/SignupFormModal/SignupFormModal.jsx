@@ -42,33 +42,14 @@ function SignupFormModal() {
   };
 
   return (
-    <>
+    <div data-testid='user-menu-button' className="sign-up">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Email
           <input
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
-          <input
-            type="text"
+            data-testid='first-name-input'
+            placeholder="First Name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -76,9 +57,10 @@ function SignupFormModal() {
         </label>
         {errors.firstName && <p>{errors.firstName}</p>}
         <label>
-          Last Name
           <input
             type="text"
+            data-testid='last-name-input'
+            placeholder="Last Name"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
@@ -86,9 +68,32 @@ function SignupFormModal() {
         </label>
         {errors.lastName && <p>{errors.lastName}</p>}
         <label>
-          Password
+          <input
+            type="text"
+            data-testid='email-input'
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        {errors.email && <p data-testid='email-error-message'>{errors.email}</p>}
+        <label>
+          <input
+            type="text"
+            data-testid='username-input'
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        {errors.username && <p data-testid='username-error-message'>{errors.username}</p>}
+        <label>
           <input
             type="password"
+            data-testid='password-input'
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -96,9 +101,10 @@ function SignupFormModal() {
         </label>
         {errors.password && <p>{errors.password}</p>}
         <label>
-          Confirm Password
           <input
             type="password"
+            data-testid='confirm-password-input'
+            placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
@@ -107,9 +113,11 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button type="submit" data-testid='form-sign-up-button'
+        disabled={username.length < 4 || password.length < 6 || !email.length || !firstName.length || !lastName.length || !confirmPassword.length}
+        >Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 

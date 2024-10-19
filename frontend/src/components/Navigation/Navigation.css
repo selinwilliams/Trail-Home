@@ -1,43 +1,6 @@
-
-/* Navigation container styles */
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.hidden {
+  display: none;
+}
+.header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffe388;
-  padding: 10px 20px;
-  border-bottom: 2px solid #ccc;
-}
-
-/* Navigation links */
-li {
-  margin-right: 20px;
-}
-
-li a {
-  text-decoration: none;
-  color: #001e69;
-  font-weight: bold;
-  padding: 8px 12px;
-  border-radius: 4px;
-}
-
-li a:hover {
-  background-color: #0a1fa3d9;
-  color: #f6de7f;
-}
-
-/* ProfileButton styling (integrating with the component) */
-.profile-icon {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-/* Ensuring log in and sign up buttons are spaced correctly */
-ul li:last-child {
-  margin-right: 0;
 }
