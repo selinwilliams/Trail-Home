@@ -1,17 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { FaUserCircle } from 'react-icons/fa';
-import * as sessionActions from '../../store/session';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
-import OpenModalMenuItem from './OpenModelMenuItem';
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { FaUserCircle } from "react-icons/fa";
+import * as sessionActions from "../../store/session";
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
+import OpenModalMenuItem from "./OpenModelMenuItem";
 import { RxHamburgerMenu } from "react-icons/rx";
-import './ProfileButton.css'
+import "./ProfileButton.css";
+import { useNavigate } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -27,17 +29,24 @@ function ProfileButton({ user }) {
       }
     };
 
-    document.addEventListener('click', closeMenu);
+    document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
 
+  const manageSpots = (e) => {
+    e.preventDefault();
+    closeMenu();
+    navigate("/spots/manage");
+  };
+
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    navigate("/");
   };
 
   const FaUser = () => {
@@ -50,49 +59,62 @@ function ProfileButton({ user }) {
 
   const HamburgerMenu = () => {
     return (
-      <div style={{color: "black", fontSize: "18px"}}>
-        <RxHamburgerMenu/>
+      <div style={{ color: "black", fontSize: "18px" }}>
+        <RxHamburgerMenu />
       </div>
     );
   };
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
-      <button data-testid='user-menu-button' className='oval-button' onClick={toggleMenu}>
-         <HamburgerMenu className='icon' />
-        <FaUser className='icon' />
+    <div>
+      <button
+        data-testid="user-menu-button"
+        className="oval-button"
+        onClick={toggleMenu}
+      >
+        <div className="profileIcon">
+          <HamburgerMenu className="icon" />
+          <FaUser className="icon" />
+        </div>
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <div className={ulClassName} id="profileMenu" ref={ulRef}>
         {user ? (
-          <>
-            <li>Hello, {user.username}</li>
+          <div>
+            <div className="greeting" >Hello, <span className="username"> {user.username}</span></div>
             {/* <li>{user.firstName} {user.lastName}</li> */}
-            <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
-          </>
+            <div className="user-email">{user.email}</div>
+            <div>
+              <button className="manageSpotsButton" onClick={manageSpots}>
+                Manage Spots{" "}
+              </button>
+            </div>
+            <div>
+              <button className="logoutButton" onClick={logout}>
+                Log Out
+              </button>
+            </div>
+          </div>
         ) : (
-          <div className='not-logged'>
-              <div className='login-profile'>
+          <div className="not-logged">
+            <div className="login-profile">
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
-              </div>
-              <div className='signup-modal'>
+            </div>
+            <div className="signup-button">
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-              </div>
+            </div>
           </div>
         )}
-      </ul>
-    </>
+      </div>
+    </div>
   );
 }
 

@@ -12,7 +12,6 @@ function DeleteSpotModal({ spot }) {
     e.preventDefault();
 
     await dispatch(deleteSpotThunk(spot))
-
     closeModal()
   };
 

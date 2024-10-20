@@ -9,8 +9,7 @@ const LandingPage = () => {
   // HOOKS
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const spots = useSelector((state) => state.spots?.allSpots || [] );
-  console.log(spots, "!spots!!!!")
+  const spots = useSelector((state) => state.spots.allSpots);
   const [isLoaded, setIsLoaded] = useState(false);
 
 
@@ -36,16 +35,6 @@ const LandingPage = () => {
     navigate(`/spots/${spot.id}`)
   }
 
-  // JSX
-
-  if(!isLoaded){
-    return (<img
-      src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
-      alt="loading animation"
-      style={{height: '30px', width: '30px'}}
-      />
-    );
-  }
 
 
   return (

@@ -9,6 +9,7 @@ import OpenModalButton from '../../../components/OpenModalButton/OpenModalButton
 import DeleteReviewModal from './DeleteReviewModal';
  
 export default function SpotDetails() {
+  // console.log("SpotDetails component rendered");
   const dispatch = useDispatch();
   const { id } = useParams();
   const spot = useSelector((state) => state.spots.spotDetails)

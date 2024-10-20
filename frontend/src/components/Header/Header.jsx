@@ -10,7 +10,7 @@ function Header({ isLoaded }) {
     <div className="header">
       <NavLink to="/"><Logo /></NavLink>
       <div className="headerRight" >
-        <NavLink to="/spots"><CreateASpotButton /></NavLink>
+        <NavLink to="/spots/new"><CreateASpotButton /></NavLink>
         <Navigation isLoaded={isLoaded}/>
       </div>
     </div>

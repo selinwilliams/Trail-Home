@@ -31,47 +31,57 @@ function LoginFormModal() {
   };
 
   return (
-    <>
-      <h1 data-testid='user-menu-button'>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="login-form">
+      <h1 data-testid="user-menu-button">Log In</h1>
+      <div className="login-info">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <div className="login-credebtials">
+              <label>
+                {errors.credential && <p>{errors.credential}</p>}
+                <input
+                  type="text"
+                  data-testid="user-menu-button"
+                  placeholder="Username or Email"
+                  value={credential}
+                  onChange={(e) => setCredential(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="password"
+                  data-testid="user-menu-button"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            {errors.credential && <p>{errors.credential}</p>}
 
-        <label>
-           {errors.credential && <p>{errors.credential}</p>}
-          <input
-            type="text"
-            data-testid='user-menu-button'
-            placeholder="Username or Email"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        
-        <label>
-          <input
-            type="password"
-            data-testid='user-menu-button'
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-       
-        <button
-          className="login-button"
-          type="submit"
-          disabled={credential.length < 4 || password.length < 6}
-           data-testid='user-menu-button'
-
-        >
-          Log In
-        </button>
-        <button data-testid='user-menu-button' className="demo-user" onClick={handleDemoUser}>
-          Demo User
-        </button>
-      </form>
-    </>
+            <button
+              className="login-button"
+              type="submit"
+              disabled={credential.length < 4 || password.length < 6}
+              data-testid="user-menu-button"
+            >
+              Log In
+            </button>
+            <button
+              data-testid="user-menu-button"
+              className="demo-user"
+              onClick={handleDemoUser}
+            >
+              Demo User
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

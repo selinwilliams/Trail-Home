@@ -6,9 +6,12 @@ import { createSpotThunk } from '../../store/spots';
 
 
 const CreateASpot = () => {
+  //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
+  
+  //hooks ----manage state
   const [form, setForm] = useState({
     address: "",
     city: "",
@@ -43,9 +46,10 @@ const CreateASpot = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form, "step 2");
-    const res = await dispatch(createSpotThunk(form))
+    const formattedImages = [form.previewImage, form.image1, form.image2, form.image3, form.image4]
+    const res = await dispatch(createSpotThunk(form, formattedImages))
     if(res.ok || res.ok === undefined){
+      //navigate
       navigate(`/spots/${res.id}`)
     } else {
       //do the code for error

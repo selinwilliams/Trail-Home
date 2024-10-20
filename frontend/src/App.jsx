@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         element: <SpotDetails />
       },
       {
-        path: '/spots',
+        path: '/spots/new',
         element: <CreateASpot />
       },
       {
