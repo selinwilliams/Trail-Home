@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 import './LandingPage.css'
@@ -10,30 +10,30 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const spots = useSelector((state) => state.spots.allSpots);
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
 
 
   // USE EFFECTS
   useEffect(() => {
     const getData = async() => {
        await dispatch(getSpotsThunk());
-      setIsLoaded(true);
+      // setIsLoaded(true);
      }
 
     // we are not loaded
-    if(!isLoaded && !spots.length) {
+    // if(!isLoaded && !spots.length) {
       getData()
-    }
-  }, [dispatch, isLoaded, spots])
+    // }
+  }, [dispatch])
 
   // Custom FUNCTIONS and variables
 
-  // const goToSpot = (e, spot) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
+  const goToSpot = (e, spot) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  //   navigate(`/spots/${spot.id}`)
-  // }
+    navigate(`/spots/${spot.id}`)
+  }
   return (
     <>
       <div data-testid='spots-list'className="spotSection">
@@ -41,7 +41,7 @@ const LandingPage = () => {
             <div data-testid='spot-tile'
               className="spot-card"
               key={`${spotId}-${spot.id}`}
-              onClick={() => navigate(`/spots/${spot.id}`)}
+              onClick={e => goToSpot(e, spot)}
               >
                 <span data-testid='spot-tooltip'className="tooltip-text" id="top">{spot.name}</span>
                 <div data-testid='spot-tile' className="spotCardInfo">
