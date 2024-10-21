@@ -139,13 +139,13 @@ router.get("/", validateSpotQueries, async (req, res) => {
 
 	spots.map((spot) => {
 		let count = 0;
-		let previewUrl = "no preview url";
-		spot.Reviews.forEach((review) => (count += review.stars));
-		spot.SpotImages.forEach((image) =>
-			image.preview === true
-				? (previewUrl = image.url)
-				: (previewUrl = "no preview url")
-		);
+		const avgRating = spot.Reviews.reduce((review, acc) => acc + review.stars, 0) / spot.Reviews.length;
+		// spot.SpotImages.forEach((image) =>
+		// 	image.preview === true
+		// 		? (previewUrl = image.url)
+		// 		: (previewUrl = "no preview url")
+		// );
+
 		Spots.push({
 			id: spot.id,
 			ownerId: spot.ownerId,
@@ -165,8 +165,8 @@ router.get("/", validateSpotQueries, async (req, res) => {
 				spot.updatedAt.getMonth() + 1
 			}-${spot.updatedAt.getDate()} ${spot.updatedAt.getHours()}:${spot.updatedAt.getMinutes()}:${spot.updatedAt.getSeconds()}`,
 			// Need to come back and fix this
-			avgRating: count / spot.Reviews.length || 0,
-			previewImage: previewUrl,
+			avgRating: avgRating / spot.Reviews.length || 0,
+			previewImage: spot.SpotImages.find(img => img.preview)|| "https://placehold.co/600x400"
 		});
 	});
 
