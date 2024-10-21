@@ -22,6 +22,7 @@ function SignupFormModal() {
 		username.length >= 4 &&
 		firstName.length >= 1 &&
 		lastName.length >= 1 &&
+    password === confirmPassword &&
 		confirmPassword.length >= 6
 			? setButton(false)
 			: setButton(true);
@@ -128,6 +129,9 @@ function SignupFormModal() {
         <button type="submit" data-testid='form-sign-up-button'
         disabled={button}
         >Sign Up</button>
+        {/* {Object.values(errors).map((error, index) => (
+          <p key={index} className="error-message">{error}</p>
+        ))} */}
       </form>
     </div>
   );

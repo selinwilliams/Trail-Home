@@ -28,15 +28,12 @@ const LandingPage = () => {
 
   // Custom FUNCTIONS and variables
 
-  const goToSpot = (e, spot) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // const goToSpot = (e, spot) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
 
-    navigate(`/spots/${spot.id}`)
-  }
-
-
-
+  //   navigate(`/spots/${spot.id}`)
+  // }
   return (
     <>
       <div data-testid='spots-list'className="spotSection">
@@ -44,14 +41,15 @@ const LandingPage = () => {
             <div data-testid='spot-tile'
               className="spot-card"
               key={`${spotId}-${spot.id}`}
-              onClick={e => goToSpot(e, spot)}
+              onClick={() => navigate(`/spots/${spot.id}`)}
               >
                 <span data-testid='spot-tooltip'className="tooltip-text" id="top">{spot.name}</span>
                 <div data-testid='spot-tile' className="spotCardInfo">
-                  <img data-testid='spot-thumbnail-img' className="spotCardInfoImg" src={spot.previewImage} />
+                  <img data-testid='spot-thumbnail-img' className="spotCardInfoImg" src={spot.previewImage.url} />
                   <div className="spotCardText">
                     <span data-testid='spot-city'>{spot.city}, {spot.state}</span>
-                    <span className="starRating"><FaStar /> {spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</span>
+                    <span className="starRating"><FaStar /> {spot.avgRating ? spot.avgRating.toFixed(1) : "New"}
+                      </span>
                   </div>
                 </div>
               <div data-testid='spot-price'>
@@ -59,7 +57,9 @@ const LandingPage = () => {
                 <span >night</span>
               </div>
             </div>
+            
         ))}
+        
       </div>
     </>
   )

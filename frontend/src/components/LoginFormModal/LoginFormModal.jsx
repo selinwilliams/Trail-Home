@@ -38,7 +38,6 @@ function LoginFormModal() {
           <div>
             <div className="login-credebtials">
               <label>
-                {errors.credential && <p>{errors.credential}</p>}
                 <input
                   type="text"
                   data-testid="user-menu-button"

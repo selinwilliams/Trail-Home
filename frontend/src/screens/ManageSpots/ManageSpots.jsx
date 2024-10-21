@@ -18,8 +18,8 @@ export default function ManageSpots() {
   // USE EFFECTS
   useEffect(() => {
     const getData = async () => {
-      console.log("Fetching spots for user................")
       await dispatch(getSpotByUserThunk(user.id));
+
       setIsLoaded(true);
     };
 
@@ -67,7 +67,15 @@ export default function ManageSpots() {
                   </span>
                   <span className="starRating">
                     <FaStar />{" "}
-                    {spot.avgRating ? spot.avgRating.toFixed(1) : "New"}
+                    {spot.numReviews === 0
+    ? "New"
+    : spot.avgStarRating
+    ? `${spot.avgStarRating.toFixed(1)} · ${
+        spot.numReviews !== 1
+          ? `${spot.numReviews} Review`
+          : `${spot.numReviews} Reviews`
+      }`
+    : "No rating"}
                   </span>
                 </div>
               </div>

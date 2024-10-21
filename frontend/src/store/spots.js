@@ -81,9 +81,7 @@ export const getSpotByUserThunk = () => async (dispatch) => {
     const res = await csrfFetch('/api/spots/current');
     if (res.ok) {
       const data = await res.json();
-      // console.log("Data from API!!!!!", data)
       await dispatch(manageSpot(data))
-
     } else {
       throw res;
     }
@@ -142,27 +140,45 @@ export const createSpotThunk = (spot, imgUrls) => async (dispatch) => {
 }
 
 export const updateSpotThunk = (id, spotForm) => async (dispatch) => {
-  try {
-    const options = {
-      method: 'PUT',
-      header: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(spotForm)
-    }
-    const res = await csrfFetch(`/api/spots/${id}`, options)
-    if (res.ok) {
-      // step 5
-      const data = await res.json();
-      dispatch(updateSpot(data))
-      return data;
-    } else {
-      throw res;
-    }
-  } catch (error) {
-    return error;
+  const {address, city, state, country, lat, lng, name, description, price} = spotForm
+  const res = await csrfFetch(`/api/spots/${id}`, {
+
+    method: 'PUT',
+    BODY: JSON.stringify({
+      address, city, state, country, lat, lng, name, description, price
+    })
+  })
+
+  if (res.ok) {
+    const updatedSpot = await res.json();
+    dispatch(updateSpot(updatedSpot.spotForm));
+  return updatedSpot
+  } else {
+    const errorData = await res.json()
+    console.error("Update failed:", errorData); // Log the error
+  throw new Error(errorData.message || 'Failed to update spot');
   }
+  // try {
+  //   const options = {
+  //     method: 'PUT',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(spotForm)
+  //   }
+  //   const res = await csrfFetch(`/api/spots/${id}`, options)
+  //   if (res.ok) {
+  //     // step 5
+  //     const data = await res.json();
+  //     dispatch(updateSpot(data))
+  //     return data;
+  //   } else {
+  //     throw res;
+  //   }
+  // } catch (error) {
+  //   return error;
+  // }
 }
 
-export const deleteSpotThunk = (spot) => async (dispatch) => {
+export const deleteSpotThunk = (spot, userId) => async (dispatch) => {
   try {
     const options = {
       method: 'DELETE',
@@ -174,6 +190,7 @@ export const deleteSpotThunk = (spot) => async (dispatch) => {
     if (res.ok) {
       const data = await res.json();
       dispatch(deleteSpot(data));
+      await dispatch(getSpotByUserThunk(userId));
       return data;
     } else {
       throw res;
@@ -266,9 +283,9 @@ function spotsReducer(state = initialState, action) {
     }
 
     case GET_SPOT: {
-      newState = { ...state, spotDetails: action.payload }
-      newState.allSpots = [action.payload]
-      newState.byId = action.payload;
+      newState = { ...state, spotDetails: action.payload || {} }
+      // newState.allSpots = [action.payload]
+      // newState.byId = action.payload;
       return newState;
     }
 
@@ -317,7 +334,7 @@ function spotsReducer(state = initialState, action) {
           newState.byId[spot.id] = spot;
         }
       } else {
-        console.error('expected an array but got an**********', action.spots)
+        // console.error('expected an array but got an**********', action.spots)
       }
       return newState;
 
@@ -351,11 +368,11 @@ function spotsReducer(state = initialState, action) {
     }
 
     case CREATE_SPOT: {
-      newState = { ...state };
+      newState = { ...state, ...action.payload };
+      console.log(newState)
+      // newState.allSpots = [action.payload, ...newState.allSpots];
 
-      newState.allSpots = [action.payload, ...newState.allSpots];
-
-      newState.byId = { ...newState.byId, [action.payload.id]: action.payload }
+      // newState.byId = { ...newState.byId, [action.payload.id]: action.payload }
 
       return newState
 

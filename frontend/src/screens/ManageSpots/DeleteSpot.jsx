@@ -11,7 +11,7 @@ function DeleteSpotModal({ spot }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(deleteSpotThunk(spot))
+    await dispatch(deleteSpotThunk(spot, spot.ownerId))
     closeModal()
   };
 

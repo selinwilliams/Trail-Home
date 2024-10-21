@@ -18,7 +18,7 @@ const CreateASpot = () => {
     state: "",
     country: "",
     lat: "85",
-    lng: "100",
+    lng: "150",
     name: "",
     description: "",
     price: "",
@@ -47,12 +47,14 @@ const CreateASpot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formattedImages = [form.previewImage, form.image1, form.image2, form.image3, form.image4]
+    
     const res = await dispatch(createSpotThunk(form, formattedImages))
     if(res.ok || res.ok === undefined){
       //navigate
       navigate(`/spots/${res.id}`)
-    } else {
-      //do the code for error
+    } else if (res.errors) {
+      // Set the errors to the form's error state if they exist
+      setForm((prev) => ({ ...prev, errors: res.errors }));
     }
   }
 
@@ -72,24 +74,27 @@ const CreateASpot = () => {
               placeholder='Country'
               value={form.country}
               onChange={(e) => updateForm(e.target.value, "country")}
+              
             />
+            {form.errors.country && <p className='error'>{form.errors.country}</p>}
             <label>Street Address</label>
             <input
               placeholder='Address'
               value={form.address}
               onChange={(e) => updateForm(e.target.value, "address")}
             />
+            
             <div className='section-one-a'>
               <div className='section-one-city'>
-                <label>City</label>
+                <label>City,</label>
                 <br />
                 <input
                   placeholder='City'
                   value={form.city}
                   onChange={(e) => updateForm(e.target.value, "city")}
                 />
+                {form.errors.city && <p className='error'>{form.errors.city}</p>}
               </div>
-              <span className='comma'>,</span>
               <div className='section-one-state'>
                 <label>State</label>
                 <br />
@@ -98,6 +103,7 @@ const CreateASpot = () => {
                   value={form.state}
                   onChange={(e) => updateForm(e.target.value, "state")}
                 />
+                  {form.errors.state && <p className='error'>{form.errors.state}</p>}
               </div>
             </div>
         </div>
@@ -111,6 +117,7 @@ const CreateASpot = () => {
             value={form.description}
             onChange={(e) => updateForm(e.target.value, "description")}
           />
+            {form.errors.description && <p className='error'>{form.errors.description}</p>}
         </div>
         <div className='section-three'>
           <h3>Create a title for your spot</h3>

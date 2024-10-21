@@ -41,11 +41,6 @@
     width: 100%;
   }
   
-  .comma {
-    position: relative;
-    top: 1.5rem
-  }
-  
   .section-one-a {
     display: flex;
     flex-direction: row;
