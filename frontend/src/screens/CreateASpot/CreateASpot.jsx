@@ -76,7 +76,6 @@ const CreateASpot = () => {
               onChange={(e) => updateForm(e.target.value, "country")}
               
             />
-            {form.errors.country && <p className='error'>{form.errors.country}</p>}
             <label>Street Address</label>
             <input
               placeholder='Address'
@@ -93,7 +92,6 @@ const CreateASpot = () => {
                   value={form.city}
                   onChange={(e) => updateForm(e.target.value, "city")}
                 />
-                {form.errors.city && <p className='error'>{form.errors.city}</p>}
               </div>
               <div className='section-one-state'>
                 <label>State</label>
@@ -103,7 +101,6 @@ const CreateASpot = () => {
                   value={form.state}
                   onChange={(e) => updateForm(e.target.value, "state")}
                 />
-                  {form.errors.state && <p className='error'>{form.errors.state}</p>}
               </div>
             </div>
         </div>
@@ -117,7 +114,6 @@ const CreateASpot = () => {
             value={form.description}
             onChange={(e) => updateForm(e.target.value, "description")}
           />
-            {form.errors.description && <p className='error'>{form.errors.description}</p>}
         </div>
         <div className='section-three'>
           <h3>Create a title for your spot</h3>
