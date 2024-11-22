@@ -3,6 +3,8 @@ import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import "./LoginPageForm.css";
+import { FaCircleUser } from "react-icons/fa6";
+
 
 function LoginFormPage() {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ function LoginFormPage() {
       }
     );
   };
+ 
 
   return (
     <div className="login-page-form">

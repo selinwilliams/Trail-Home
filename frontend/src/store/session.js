@@ -1,4 +1,3 @@
-import { body } from 'express-validator';
 import { csrfFetch } from './csrf';
 
 const SET_USER = "session/setUser";
