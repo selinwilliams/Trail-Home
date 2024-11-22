@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import * as sessionActions from '../../store/session';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import './LoginPageForm.css';
+import { useState } from "react";
+import * as sessionActions from "../../store/session";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import "./LoginPageForm.css";
 
 function LoginFormPage() {
   const dispatch = useDispatch();
@@ -25,10 +25,11 @@ function LoginFormPage() {
   };
 
   return (
-    <div className='login-page-form'>
+    <div className="login-page-form">
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
-        <label>
+        <div className="username-email">
+        <label >
           Username or Email
           <input
             type="text"
@@ -46,6 +47,7 @@ function LoginFormPage() {
             required
           />
         </label>
+         </div>
         {errors.credential && <p>{errors.credential}</p>}
         <button type="submit">Log In</button>
       </form>

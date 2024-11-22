@@ -1,5 +1,14 @@
 .login-page-form {
-    background-color: aqua;
-    color: blue;
+    background-color: #FFFFF0;
+    color: #FF5A5F;
+    padding: 30px;
 }
 
+.username-email {
+    color: #222222;
+    
+}
+
+h1 { 
+    margin: 0
+}
