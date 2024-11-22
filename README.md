@@ -1,4 +1,19 @@
-# API Project
+# Trail-Home
+
+# Setup 
+ 
+Inside the backend folder, run npm install.
+
+Once you've installed the dependencies, you'll need to create a .env file and add the following contents:
+
+PORT=8000
+DB_FILE=db/dev.db
+JWT_SECRET=<generate secret token>
+JWT_EXPIRES_IN=604800
+SCHEMA=<custom schema name>
+
+Run the server by using the --npm start--
+
 
 ## Database Schema Design
 

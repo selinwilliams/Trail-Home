@@ -137,7 +137,7 @@ router.get("/", validateSpotQueries, async (req, res) => {
 
 	let Spots = [];
 
-	spots.map((spot) => {
+spots.map((spot) => {
 		let count = 0;
 		const avgRating = spot.Reviews.reduce((review, acc) => acc + review.stars, 0) / spot.Reviews.length;
 		// spot.SpotImages.forEach((image) =>

@@ -8,7 +8,7 @@ projects.
 To clone this repo as `<new-project-name>`, run
 
 ```shell
-npx tiged appacademy/aa-react18-redux-vite-template#main <new-project-name>
+npx tiged appacademy/aa-react18-vite-template#main <new-project-name>
 ```
 
 in the directory where you want the new project to appear.
