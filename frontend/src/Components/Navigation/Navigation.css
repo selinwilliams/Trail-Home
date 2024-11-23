@@ -1,11 +1,7 @@
-.nav {
+ul {
     background-color: #FFFFF0;
     color: #FF5A5F;
     padding: 40px;
+        margin: 0;
 }
 
-
-
-ul {
-    margin: 0;
-}
