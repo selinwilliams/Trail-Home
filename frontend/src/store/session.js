@@ -17,7 +17,7 @@ const removeUser = () => {
   };
 };
 
-const initialState = { user: null };
+
 //THUNK
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
@@ -68,7 +68,7 @@ export const logout = () => async (dispatch) => {
   return response;
 };
 
-
+const initialState = { user: null };
 //REDUCER FUNCTION
 const sessionReducer = (state = initialState, action) => {
   switch (action.type) {

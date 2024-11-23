@@ -11,3 +11,9 @@
     font-family: "Roboto Flex", sans-serif;
 }
 
+
+div > label {
+    display: flex;
+    flex-direction: column;
+}
+

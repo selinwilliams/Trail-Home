@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
 
-li {
-    font-family: "Roboto Flex", sans-serif;
-    color: #3c4043;
-}
-
 .button {
   align-items: center;
   appearance: none;
@@ -17,11 +12,10 @@ li {
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
+  font-family: "Roboto Flex", sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 48px;
-  justify-content: center;
   letter-spacing: .25px;
   line-height: normal;
   max-width: 100%;
@@ -44,36 +38,6 @@ li {
   color: #174ea6;
 }
 
-.button:active {
-  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
-  outline: none;
-}
-
-.button:focus {
-  outline: none;
-  border: 2px solid #2b2c2d;
-}
-
-.button:not(:disabled) {
-  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
-}
-
-.button:not(:disabled):hover {
-  box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
-}
-
-.button:not(:disabled):focus {
-  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
-}
-
-.button:not(:disabled):active {
-  box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
-}
-
-.button:disabled {
-  box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
-}
-
 .hidden {
   display: none;
 }
@@ -84,6 +48,7 @@ li {
   border-radius: 25px;
   border: 1px solid #ccc;
   list-style: none;
-  padding: 10px;
+  padding: 15px;
+  font-size: 30px;
   margin: 0;
 }
