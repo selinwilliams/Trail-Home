@@ -45,7 +45,7 @@ function ProfileButton({ user }) {
     <div>
       <div >
       <button className="button"onClick={toggleMenu}>
-        <FaCircleUser  style={{ fontSize: "40px", color: "FF5A5F"}} />
+        <FaCircleUser  className="fa-circle-user" />
       </button>
       </div>
       <ul className={ulClassName} ref={ulRef}>

@@ -1,7 +1,30 @@
-ul {
-    background-color: #FFFFF0;
-    color: #FF5A5F;
+
+.navigation {
+    /* background: linear-gradient(to bottom,  rgba(50, 115, 50, 0.8), #F5F5F5); */
+    background: linear-gradient(to right, #a9c6c3, #dce9be);
     padding: 40px;
-        margin: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
 }
 
+
+.trail-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none; 
+  }
+  
+  .trail-icon {
+    color: #4A5568; /* Matches the desired color */
+    font-size: 50px; /* Icon size */
+    margin-right: 2px; /* Space between icon and text */
+  }
+  
+  .trail-text {
+    font-size: 22px; /* Adjust size relative to icon */
+    color: #4A5568; /* Same color as the icon */
+    font-family: 'Roboto', sans-serif; /* Clean, modern font */
+  }
