@@ -7,10 +7,7 @@ import { IoTrailSignOutline } from "react-icons/io5";
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
-  const trailHomeSign = () => {
-    <IoTrailSignOutline />;
-  };
-
+ 
   return (
     <div className="navigation">
       <li className="home">
