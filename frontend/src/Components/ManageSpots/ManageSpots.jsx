@@ -5,30 +5,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "./DeleteSpot";
-import { getOneSpot } from "../../store/spots";
+import { getAllSpots, getOneSpot } from "../../store/spots";
 
 export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
-    const spots = useSelector((state) => state.spots.currentSpot);
+    const spots = useSelector((state) => state.spots.allSpots);
+    const currentSpots = spots.filter((spot) => spot.ownerId === user.id );
+    // console.log("CURRENT SPOTS", currentSpots)
     const [isLoaded, setIsLoaded] = useState(false);
   
-    // USE EFFECTS
+    // // USE EFFECTS
     useEffect(() => {
-      const getData = async () => {
-        await dispatch(getOneSpot(user.id));
-  
-        setIsLoaded(true);
-      };
-  
-      // we are not loaded
-      if (!isLoaded && !spots.length) {
-        getData();
-      }
-    }, [dispatch, isLoaded, spots, user.id]);
-  
-    const goToSpot = (e, spot) => {
+      // const getData = async () => {
+        dispatch(getAllSpots());
+        dispatch(getOneSpot(null));
+        // setIsLoaded(true);
+      // };
+ 
+        // getData();
+      
+    }, [dispatch]);
+     if(!currentSpots) return null;
+     
+     const goToSpot = (e, spot) => {
       e.preventDefault();
       e.stopPropagation();
   
@@ -42,9 +43,9 @@ export default function ManageSpots() {
   
     const createSpot = (e) => {
       e.preventDefault();
-      navigate("/spots/new");
+      navigate("/new-spot");
     };
-  
+   
     return (
       <div className="manage-spots-page">
         <div className="manage-spots-top">
@@ -52,7 +53,7 @@ export default function ManageSpots() {
           <button onClick={createSpot}>Create a Spot</button>
         </div>
         <div className="manage-spot-section">
-          {spots.map((spot, idx) => (
+          {currentSpots.map((spot, idx) => (
             <div className="spot-card" key={`${idx}-${spot.id}`}>
               <div onClick={(e) => goToSpot(e, spot)}>
                 <span className="tooltip-text" id="top">

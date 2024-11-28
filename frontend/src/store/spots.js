@@ -16,6 +16,12 @@ const loadSpots = (spots) => {
     };
 };
 
+const filterSpots = (spots) => {
+    return {
+        type: FILTER_SPOTS,
+        spots,
+    };
+}
 
 const loadASpot = (spot) => {
     return {
