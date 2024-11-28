@@ -28,3 +28,26 @@
     color: #4A5568; /* Same color as the icon */
     font-family: 'Roboto', sans-serif; /* Clean, modern font */
   }
+
+
+  .nav-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .new-spot-button {
+    background-color:#4A5568;
+    cursor: pointer;
+    font-size: 14pt;
+    color: #ffffff;
+    border: none;
+    padding: 5px;
+    border-radius: 20px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+  .new-spot-button:hover {
+  color: #d0d0d0;
+   
+  }

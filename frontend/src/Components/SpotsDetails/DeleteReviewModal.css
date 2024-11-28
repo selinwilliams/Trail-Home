@@ -1,0 +1,9 @@
+.delete-review {
+    height: 20rem;
+    width: 25rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }

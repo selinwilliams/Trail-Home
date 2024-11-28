@@ -12,6 +12,12 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
 
+  const handleDemoUser = () => {
+    return dispatch(
+      sessionActions.login({ credential: "Demo-lition", password: "password" })
+    ).then(closeModal);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -51,7 +57,12 @@ function LoginFormModal() {
         </label>
          </div>
         {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+        <button type="submit"className="login-button" >
+          Log In</button>
+
+        <button className="demo-user" onClick={handleDemoUser}>
+          Demo User
+        </button>
       </form>
     </div>
   );
