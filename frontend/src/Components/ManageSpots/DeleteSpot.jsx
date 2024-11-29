@@ -1,5 +1,4 @@
 import './DeleteSpot.css';
-
 import { useDispatch } from 'react-redux';
 import { useModal } from '../Context/Modal';
 import { deleteSpotById } from '../../store/spots';
@@ -10,7 +9,7 @@ function DeleteSpotModal({ spot }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(deleteSpotById(spot, spot.ownerId))
+     dispatch(deleteSpotById(spot.id))
     closeModal()
   };
 
