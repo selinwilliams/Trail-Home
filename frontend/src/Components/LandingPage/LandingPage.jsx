@@ -32,7 +32,7 @@ function LandingPage() {
                 >
                     <span className="tooltip-text" id="top">{spot.name}</span>
                     <div className="spotCardInfo">
-                        <img className="spotCardInfoImg" src={spot.previewImage.url} />
+                        <img className="spotCardInfoImg" src={spot.previewImage} />
                         <div className="spotCardText">
                             <span>{spot.city}, {spot.state}</span>
                             <span className="starRating"><FaStar /> {spot.avgRating ? spot.avgRating.toFixed(1) : "New"}

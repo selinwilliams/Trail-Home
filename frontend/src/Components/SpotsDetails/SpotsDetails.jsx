@@ -84,6 +84,7 @@ export default function SpotDetails() {
   const reverseReviews = reviews.slice().reverse();
   const previewImage = spot.SpotImages.find((image) => image.preview);
   const otherImages = spot.SpotImages.filter((image) => !image.preview);
+  
   return (
     <div className="spotDetails">
       <div>

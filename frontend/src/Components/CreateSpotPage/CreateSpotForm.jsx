@@ -11,8 +11,8 @@ function CreateSpotForm() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(85);
+  const [lng, setLng] = useState(140);
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -60,7 +60,7 @@ function CreateSpotForm() {
       price,
     };
 
-    // const images = [image1, image2, image3, image4];
+    const images = [image1, image2, image3, image4];
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
@@ -69,7 +69,11 @@ function CreateSpotForm() {
 
     const createdSpot = await dispatch(createSpot(newSpot));
     if (createdSpot) {
-      await dispatch(addImageToSpot(createdSpot.id, { preview: true, url: previewImage }));
+      await dispatch(addImageToSpot(createdSpot.id, { preview: true,  url: previewImage }));
+      await dispatch(addImageToSpot(createdSpot.id, {preview: false, url: image1}))
+      await dispatch(addImageToSpot(createdSpot.id, {preview: false, url: image2}))
+      await dispatch(addImageToSpot(createdSpot.id, {preview: false, url: image3}))
+      await dispatch(addImageToSpot(createdSpot.id, {preview: false, url: image4}))
       navigate(`/spots/${createdSpot.id}`);
     }
     reset();
@@ -80,8 +84,8 @@ function CreateSpotForm() {
     setCity("");
     setCountry("");
     setDescription("");
-    setLat("");
-    setLng("");
+    setLat(85);
+    setLng(140);
     setName("");
     setPrice("");
     setState("");
