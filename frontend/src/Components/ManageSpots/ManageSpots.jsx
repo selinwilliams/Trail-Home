@@ -60,7 +60,7 @@ export default function ManageSpots() {
                   {spot.name}
                 </span>
                 <div className="spotCardInfo">
-                  <img className="spotCardInfoImg" src={spot.previewImage} />
+                  <img className="spotCardInfoImg" src={spot.previewImage?.url ||  "https://placehold.co/600x400"} alt={spot.name || "Spot preview"}  />
                   <div className="spotCardText">
                     <span>
                       {spot.city}, {spot.state}
