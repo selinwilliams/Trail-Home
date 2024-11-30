@@ -1,31 +1,45 @@
-.landing-page {
-    background-color: #FBFBF8
+body {
+   background-color: #F2F0EF; 
+   margin: 0; 
+   padding: 0;
+   box-sizing: border-box; 
+   overflow-x: hidden; 
+  
 }
 
-.spots-list-container {
+#spots-lists {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 4fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     margin-top: 20px;
     max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px auto;
     gap: 20px;
+    padding: 0 10px;
   }
   
   .spot-card {
     max-width: 250px;
+    background-color: #f7f7d6;
     cursor: pointer;
     position: relative;
+    border-radius: 20px;
     display: inline-block;
+    box-shadow: rgb(49, 49, 49) 0px 5px 15px;
+    overflow: visible; 
   }
   
   .spotCardPrice {
     font-weight: bold;
+    margin: 7px;
+    margin-bottom: 2px;
   }
   
   .spotCardInfoImg {
     height: 15rem;
-    width: 15rem;
+  width: 100%;
+  object-fit: cover; 
+  display: block; 
+  border-radius: 20px;
   }
   
   .spotCardText {
@@ -74,3 +88,6 @@
     top: 80%;
     left: 45%;
   }
+
+
+

@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './LandingPage.css'
 import { useEffect } from 'react';
-import { getAllSpots } from '../../store/spots';
+import { getAllSpots, getOneSpot } from '../../store/spots';
 import { useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
+import { getReviewBySpotId } from '../../store/reviews';
 
 function LandingPage() {
     const dispatch = useDispatch();
@@ -12,8 +13,13 @@ function LandingPage() {
 
     useEffect(() => {
         dispatch(getAllSpots());
+        getOneSpot(null)
+        getReviewBySpotId()
     }, [dispatch]);
 
+    if (!spots || spots.length === 0) {
+        return <p>Loading spots...</p>;
+      }
 
     const goToSpot = (e, spot) => {
         e.preventDefault();
@@ -24,7 +30,7 @@ function LandingPage() {
 
     return (
         <>
-        <div id="spots-list-container">
+        <div id="spots-lists">
             {spots.map((spot, spotId) => (
                 <div className="spot-card"
                     key={`${spotId}-${spot.id}`}
