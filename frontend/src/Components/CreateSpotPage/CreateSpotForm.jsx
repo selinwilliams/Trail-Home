@@ -60,7 +60,7 @@ function CreateSpotForm() {
       price,
     };
 
-    const images = [image1, image2, image3, image4];
+    // const images = [image1, image2, image3, image4];
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);

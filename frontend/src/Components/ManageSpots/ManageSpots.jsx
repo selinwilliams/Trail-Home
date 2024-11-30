@@ -1,11 +1,11 @@
 import "./ManageSpots.css";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 import OpenModalButton from "../OpenModalButton";
 import DeleteSpotModal from "./DeleteSpot";
-import { getAllSpots, getOneSpot } from "../../store/spots";
+import { getAllSpots } from "../../store/spots";
 
 export default function ManageSpots() {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function ManageSpots() {
     const spots = useSelector((state) => state.spots.allSpots);
     const currentSpots = spots.filter((spot) => spot.ownerId === user.id );
     // console.log("CURRENT SPOTS", currentSpots)
-    const [isLoaded, setIsLoaded] = useState(false);
+    // const [isLoaded, setIsLoaded] = useState(false);
   
     // // USE EFFECTS
     useEffect(() => {

@@ -20,6 +20,7 @@ export default function SpotDetails() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
 
+ 
 
 
   useEffect(() => {
@@ -41,8 +42,8 @@ export default function SpotDetails() {
     }
   }, [reviews, sessionUser]);
 
-
-  if (!spot) {
+ 
+  if (!spot || !isLoaded) {
     return <div>loading...</div>;
   }
 
