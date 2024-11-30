@@ -8,13 +8,10 @@ const UpdateASpot = () => {
   // HOOKS
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id: spotId } = useParams();
-
+  const {  spotId } = useParams();
   //Access all spots from the state
-  const spots = useSelector((state) => state.spots.allSpots);
-  const curSpot = Array.isArray(spots)
-    ? spots.find((spot) => spot.id === Number(spotId))
-    : null;
+  const spots = useSelector((state) => state.spots.allSpots || {});
+  const curSpot = Object.values(spots).find((spot) => spot.id === Number(spotId));
 
   //HOOKS - MANAGE STATE
   const [form, setForm] = useState({
@@ -22,6 +19,8 @@ const UpdateASpot = () => {
     city: "",
     state: "",
     country: "",
+    lat: 0,
+    lng: 0,
     name: "",
     description: "",
     price: "",
@@ -31,34 +30,26 @@ const UpdateASpot = () => {
 
   // USE EFFECTS
   useEffect(() => {
-    const getData = async () => {
-      await dispatch(getAllSpots());
+    if (!Object.keys(spots).length) {
+      dispatch(getAllSpots());
+    }
+  }, [dispatch, spots]);
 
-      //   updateForm(true, "isLoaded");
-    };
-
-    // if(curSpot) {
-    //   updateForm(curSpot.country, "country");
-    //   updateForm(curSpot.address, "address");
-    //   updateForm(curSpot.city, "city");
-    //   updateForm(curSpot.state, "state");
-    //   updateForm(curSpot.name, "name");
-    //   updateForm(curSpot.price, "price");
-    //   updateForm(curSpot.description, "description");
-    // }
-    getData();
-  }, [dispatch]);
+  
 
   useEffect(() => {
     if (curSpot) {
       setForm({
-        address: curSpot.address,
-        city: curSpot.city,
-        state: curSpot.state,
-        country: curSpot.country,
-        name: curSpot.name,
-        description: curSpot.description,
-        price: curSpot.price,
+        address: curSpot.address || "",
+        city: curSpot.city || "",
+        country: curSpot.country || "",
+        state: curSpot.state || "",
+        lat: curSpot.lat || 0,
+        lng: curSpot.lng || 0,
+        name: curSpot.name || "",
+        description: curSpot.description || "",
+        price: curSpot.price || "",
+        errors: {},
       });
     }
   }, [curSpot]);
@@ -75,11 +66,14 @@ const UpdateASpot = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await dispatch(updateSpot(spotId, form));
-    if (res.ok || res.ok === undefined) {
-      // navigate
-      navigate(`/spots/${res.id}`);
+    
+    if (res && !res.errors) {
+      navigate(`/spots/${spotId}`);
     } else {
-      // do the code for error handling
+      setForm((prev) => ({
+        ...prev,
+        errors: res.errors || { general: "Failed to update spot" },
+      }));
     }
   };
 
@@ -100,6 +94,7 @@ const UpdateASpot = () => {
             value={form.country}
             onChange={(e) => updateForm(e.target.value, "country")}
           />
+          {form.errors.general && <p className="error-message">{form.errors.general}</p>}
           <label>Street Address</label>
           <input
             placeholder="Address"
@@ -125,6 +120,20 @@ const UpdateASpot = () => {
                 onChange={(e) => updateForm(e.target.value, "state")}
               />
               </div>
+             
+          </div>
+          <div>
+           <label>Latitude</label>
+           <input placeholder="LATITUDE"
+           value={form.lat}
+           onChange={(e) => updateForm(e.target.value, "latitude")}
+           
+           />
+           <label>Longtitude</label>
+           <input placeholder="LONGITUDE"
+           value={form.lng}
+           onChange={(e) => updateForm(e.target.value, "longitude")}
+           />
           </div>
         </div>
         <div className="section-two">

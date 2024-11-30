@@ -20,7 +20,7 @@ export default function ManageSpots() {
     useEffect(() => {
       // const getData = async () => {
         dispatch(getAllSpots());
-        dispatch(getOneSpot(null));
+        // dispatch(getOneSpot(null));
         // setIsLoaded(true);
       // };
  

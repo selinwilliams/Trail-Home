@@ -19,7 +19,7 @@ export default function SpotDetails() {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
- 
+
 
 
   useEffect(() => {
@@ -29,18 +29,18 @@ export default function SpotDetails() {
       setIsLoaded(true);
 
     };
- 
+
     getData();
   }, [dispatch, spotId]);
 
 
-  useEffect(() =>{
-    if (sessionUser){
+  useEffect(() => {
+    if (sessionUser) {
       const userReviewed = reviews.some((review) => review.userId === sessionUser.id);
-      setHasReviewed(userReviewed); 
+      setHasReviewed(userReviewed);
     }
   }, [reviews, sessionUser]);
-  
+
 
   if (!spot) {
     return <div>loading...</div>;
@@ -82,9 +82,16 @@ export default function SpotDetails() {
   };
 
   const reverseReviews = reviews.slice().reverse();
-  const previewImage = spot.SpotImages.find((image) => image.preview);
-  const otherImages = spot.SpotImages.filter((image) => !image.preview);
-  
+  // const previewImage = spot.SpotImages.find((image) => image.preview);
+  // // console.log("PREVIEW IMAGES", previewImage)
+  // const otherImages = spot.SpotImages.filter((image) => !image.preview);
+  const previewImage = Array.isArray(spot?.SpotImages)
+    ? spot.SpotImages.find((image) => image.preview)
+    : null;
+
+  const otherImages = Array.isArray(spot?.SpotImages)
+    ? spot.SpotImages.filter((image) => !image.preview)
+    : [];
   return (
     <div className="spotDetails">
       <div>
@@ -95,7 +102,7 @@ export default function SpotDetails() {
       </div>
       <div className="images">
         <div>
-         {previewImage && (
+          {previewImage && (
             <img className='preview-img' src={previewImage.url} alt="Preview" />
           )}
         </div>
@@ -113,7 +120,7 @@ export default function SpotDetails() {
           </div>
 
           <div className="small-img-row-2">
-          {otherImages.slice(2).map((image, idx) => (
+            {otherImages.slice(2).map((image, idx) => (
               <img key={idx + 2} className='small-img' src={image.url} alt={`Image ${idx + 3}`} />
             ))}
             {/* <img
@@ -128,7 +135,11 @@ export default function SpotDetails() {
       <div className="spotDetailsInfo">
         <div>
           <h2>
-            Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+            Hosted by {" "}
+            {spot.Owner
+              ? `${spot.Owner.firstName || "Unknown"} ${spot.Owner.lastName || "Host"
+              }`
+              : "Loading..."}
           </h2>
           <p>{spot.description}</p>
         </div>
@@ -139,7 +150,7 @@ export default function SpotDetails() {
               <span> night</span>
             </span>
             <span className="starRating"><FaStar />
-            {spot.avgRating != null ? spot.avgRating.toFixed(1) : "New"}
+              {spot.avgRating != null ? spot.avgRating.toFixed(1) : "New"}
             </span>
           </div>
           <button className="reserveButton" onClick={handleReserve}>
@@ -152,17 +163,14 @@ export default function SpotDetails() {
           <FaStar />{" "}
           {spot.numReviews === 0
             ? "New"
-            : `${spot.avgStarRating != null ? spot.avgStarRating.toFixed(1) : "No Rating"} · ${
-              spot.numReviews === 1
-                ? `${spot.numReviews} Review`
-                : `${spot.numReviews} Reviews`        
-              }`}
+            : `${spot.avgStarRating != null ? spot.avgStarRating.toFixed(1) : "No Rating"} · ${spot.numReviews === 1
+              ? `${spot.numReviews} Review`
+              : `${spot.numReviews} Reviews`
+            }`}
         </h2>
       </div>
 
-      {sessionUser &&
-      sessionUser.id !== spot.Owner.id &&
-      hasReviewed === false ? (
+      {sessionUser && sessionUser.id !== spot.Owner?.id && !hasReviewed ? (
         <div className="post-review-button">
           <OpenModalButton
             buttonText={"Post your review"}

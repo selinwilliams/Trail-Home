@@ -114,7 +114,7 @@ export const updateSpot = (spotId, spot) => async (dispatch) => {
     });
     const updatedSpot = await response.json();
     dispatch(editSpot(updatedSpot));
-    // return updatedSpot;
+    return updatedSpot;
 };
 
 export const deleteSpotById = (spotId) => async (dispatch) => {
