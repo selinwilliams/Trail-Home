@@ -75,10 +75,10 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             <div className="profile-buttons">
               <li>
-                <button onClick={manageSpots}>Manage Spots</button>
+                <button className="manage-spot-button" onClick={manageSpots}>Manage Spots</button>
               </li>
               <li>
-                <button onClick={logout}>Log Out</button>
+                <button  className="logout-button" onClick={logout}>Log Out</button>
               </li>
             </div>
 

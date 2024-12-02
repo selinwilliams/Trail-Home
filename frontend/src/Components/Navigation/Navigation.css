@@ -18,15 +18,15 @@
   }
   
   .trail-icon {
-    color: #4A5568; /* Matches the desired color */
-    font-size: 50px; /* Icon size */
-    margin-right: 2px; /* Space between icon and text */
+    color: #4A5568; 
+    font-size: 50px; 
+    margin-right: 2px; 
   }
   
   .trail-text {
-    font-size: 22px; /* Adjust size relative to icon */
-    color: #4A5568; /* Same color as the icon */
-    font-family: 'Roboto', sans-serif; /* Clean, modern font */
+    font-size: 22px; 
+    color: #4A5568; 
+    font-family: 'Roboto', sans-serif; 
   }
 
 

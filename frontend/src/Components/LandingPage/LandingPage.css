@@ -1,5 +1,5 @@
 body {
-   background-color: #F2F0EF; 
+   background-color: #ffffff; 
    margin: 0; 
    padding: 0;
    box-sizing: border-box; 
@@ -19,7 +19,7 @@ body {
   
   .spot-card {
     max-width: 250px;
-    background-color: #f7f7d6;
+    background-color: #fcfce3;
     cursor: pointer;
     position: relative;
     border-radius: 20px;

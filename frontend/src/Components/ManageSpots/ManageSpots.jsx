@@ -50,7 +50,7 @@ export default function ManageSpots() {
       <div className="manage-spots-page">
         <div className="manage-spots-top">
           <h2>Manage Your Spots</h2>
-          <button onClick={createSpot}>Create a Spot</button>
+          <button className="create-spot" onClick={createSpot}>Create a Spot</button>
         </div>
         <div className="manage-spot-section">
           {currentSpots.map((spot, idx) => (

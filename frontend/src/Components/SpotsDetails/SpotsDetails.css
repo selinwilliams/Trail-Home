@@ -46,7 +46,7 @@ div {
   }
   
   .reserveButton {
-    background-color: rgb(120, 191, 206);
+    background-color: rgb(255, 110, 20);
     width: 300px;
     height: 30px;
     margin-top: 15px;
@@ -58,7 +58,7 @@ div {
   }
   
   .post-review-button button, .delete-review-button button {
-    background-color: rgb(120, 191, 206);
+    background-color: rgb(255, 111, 0);
     width: 300px;
     height: 30px;
     margin-top: 15px;
