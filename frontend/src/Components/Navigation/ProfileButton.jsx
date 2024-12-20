@@ -52,7 +52,7 @@ function ProfileButton({ user }) {
 
   const HamburgerMenu = () => {
     return (
-      <div style={{ color: "black", fontSize: "22px", marginRight: "8px" }}>
+      <div style={{ color: "black", fontSize: "18px", marginRight: "6px" }}>
         <RxHamburgerMenu />
       </div>
     );

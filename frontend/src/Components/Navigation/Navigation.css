@@ -1,13 +1,13 @@
 
 .navigation {
-    /* background: linear-gradient(to bottom,  rgba(50, 115, 50, 0.8), #F5F5F5); */
-    background: linear-gradient(to right, #a9c6c3, #dce9be);
+    background-color: #FFFFFF;
     padding: 40px;
     margin: 0;
     list-style: none;
     display: flex;
     justify-content: space-between;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
+    /* text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);  */
+    border-bottom: 1px solid #E0E0E0;
 }
 
 
@@ -18,17 +18,32 @@
   }
   
   .trail-icon {
-    color: #4A5568; 
+    color: #FF5A5F;
     font-size: 50px; 
-    margin-right: 2px; 
+    margin-right: 8px; 
+    transition: transform 0.3s ease, color 0.3s ease; 
+    display: inline-block; 
   }
-  
+  .trail-icon:hover {
+    transform: scale(1.1);
+    color: #FF3D41;
+  }
   .trail-text {
-    font-size: 22px; 
-    color: #4A5568; 
-    font-family: 'Roboto', sans-serif; 
+    font-size: 24px;  
+    color: #FF5A5F;  
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;  
+    font-weight: 500;  
+    letter-spacing: 0.5px;  
+    margin-bottom: 20px;
+    text-align: center; 
   }
-
+  @media (max-width: 767px) {
+    .trail-text {
+      font-size: 20px;
+      text-align: left; 
+    }
+  }
 
   .nav-buttons {
     display: flex;
@@ -36,7 +51,7 @@
   }
 
   .new-spot-button {
-    background-color:#4A5568;
+    background-color:#FF5A5F;
     cursor: pointer;
     font-size: 14pt;
     color: #ffffff;

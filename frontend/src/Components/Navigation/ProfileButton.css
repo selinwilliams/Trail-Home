@@ -20,7 +20,7 @@
   line-height: normal;
   max-width: 100%;
   overflow: visible;
-  padding: 2px 24px;
+  padding: 2px 12px;
   position: relative;
   text-align: center;
   text-transform: none;
@@ -57,8 +57,8 @@
 
 
 .fa-circle-user {
-  font-size: 40px;
-  color: #4A5568;
+  font-size: 30px;
+  color: #949494;
 }
 
 .manage-spot-button {
