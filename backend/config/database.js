@@ -1,4 +1,5 @@
 const config = require("./index");
+// config/database.js
 
 module.exports = {
 	development: {

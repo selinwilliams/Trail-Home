@@ -1,3 +1,6 @@
+require('dotenv').config();  // Make sure dotenv is required at the start of the file
+
+
 module.exports = {
 	environment: process.env.NODE_ENV || "development",
 	port: process.env.PORT || 8000,
