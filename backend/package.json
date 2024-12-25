@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"sequelize": "sequelize",
-		"sequelize-cli": "sequelize-cli",
+		"sequelize": "npx sequelize",
+		
 		"start": "per-env",
 		"start:development": "nodemon ./bin/www",
 		"start:production": "node ./bin/www",
@@ -27,12 +27,12 @@
 		"jsonwebtoken": "^9.0.2",
 		"morgan": "^1.10.0",
 		"per-env": "^1.0.2",
-		"pg": "^8.13.0",
-		"sequelize": "^6.37.5"
+		"pg": "^8.13.0"
 	},
 	"devDependencies": {
 		"dotenv-cli": "^7.4.2",
 		"nodemon": "^3.1.5",
+		"sequelize": "^6.37.5",
 		"sequelize-cli": "^6.6.2",
 		"sqlite3": "^5.1.7"
 	}
