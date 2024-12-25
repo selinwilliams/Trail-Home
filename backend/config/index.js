@@ -1,4 +1,3 @@
-require('dotenv').config();  // Make sure dotenv is required at the start of the file
 
 
 module.exports = {
