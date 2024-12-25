@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === "production") {
 
 module.exports = {
 	async up(queryInterface, Sequelize) {
+		console.log("running spot seeder....");
 		await User.bulkCreate(
 			[
 				{
