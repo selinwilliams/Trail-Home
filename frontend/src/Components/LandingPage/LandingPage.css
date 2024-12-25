@@ -1,130 +1,131 @@
 body {
-   background-color: #F7F7F7; 
-   margin: 0; 
-   padding: 0;
-   box-sizing: border-box; 
-   overflow-x: hidden; 
-  
+  background-color: #F7F7F7;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 
 #spots-lists {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   margin-top: 20px;
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 20px auto;
-  gap: 30px; 
-  padding: 0 20px; 
-  
-  
-  width: 100%; 
-  
-  background-color: var(--light-gray); 
-  }
-  
-  .spot-card {
-    max-width: 250px;
-    background-color: white;
-    cursor: pointer;
-    position: relative;
-    border-radius: 8px;
-    display: inline-block;
-    box-shadow:0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: visible; 
-  }
-  
-  .spotCardPrice {
-    font-weight: bold;
-    margin: 7px;
-    /* padding-bottom: 50px; */
-    margin-bottom: 4px;
-  }
-  
-  .spotCardInfoImg {
-    height: 200px;
-  width: 100%;
-  object-fit: cover; 
-  border-radius: 8px;
-  }
-  
-  .spotCardText {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-  }
-  
-  .starRating {
-    width: 70px;
-    display: flex;
-    justify-content: end;
-  }
-  
-  .tooltip-text {
-    visibility: hidden;
-    position: absolute;
-    z-index: 2;
-    width: 100px;
-    color: white;
-    font-size: 12px;
-    background-color: #192733;
-    border-radius: 10px;
-    padding: 10px 15px 10px 15px;
-    margin-left: 170px;
-  }
-  
-  .tooltip-text::before {
-    content: "";
-    position: absolute;
-    transform: rotate(45deg);
-    background-color: #192733;
-    padding: 5px;
-    z-index: 1;
-  }
-  
-  .spot-card:hover .tooltip-text {
-    visibility: visible;
-  }
-  
-  #top {
-    top: -40px;
-    left: -50%;
-  }
-  
-  #top::before {
-    top: 80%;
-    left: 45%;
-  }
-
-
-
-
-@media (min-width: 1024px) {
-  #spots-lists {
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 30px; 
-  }
+  gap: 30px;
+  padding: 0 20px;
+  background-color: #fff; 
+  border-radius: 12px; 
 }
 
+
+.spot-card {
+  max-width: 250px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  border-radius: 12px; 
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.spot-card:hover {
+  transform: translateY(-5px);  
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.spotCardPrice {
+  font-weight: bold;
+  margin: 10px 0;
+  font-size: 1.2rem;
+  color: #FF5A5F;  
+}
+
+.spotCardInfoImg {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.spotCardText {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: #fff; 
+}
+
+.starRating {
+  display: flex;
+  justify-content: flex-end;
+  color: #FFC107;  /* Gold color for stars */
+  font-size: 1rem;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  z-index: 2;
+  width: 100px;
+  color: white;
+  font-size: 14px;
+  background-color: #333;
+  border-radius: 8px;
+  padding: 8px;
+  margin-left: 150px;  /* Adjusted tooltip position */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip-text::before {
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+  background-color: #333;
+  padding: 5px;
+  z-index: 1;
+}
+
+.spot-card:hover .tooltip-text {
+  visibility: visible;
+}
+
+#top {
+  top: -10px;
+  left: -50%;
+}
+
+#top::before {
+  top: 80%;
+  left: 45%;
+}
+
+/* Media Queries */
+@media (min-width: 1024px) {
+  #spots-lists {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+  }
+}
 
 @media (min-width: 768px) and (max-width: 1024px) {
   #spots-lists {
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px; 
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
   }
 }
-
 
 @media (max-width: 767px) {
   #spots-lists {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px; 
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
   }
 }
 
-
 @media (max-width: 480px) {
   #spots-lists {
-    grid-template-columns: 1fr; 
-    gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 10px;
   }
 }

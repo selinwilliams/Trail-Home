@@ -1,56 +1,78 @@
 h1 {
-    display: flex;
-    justify-content: center;
-    color:  rgb(83, 83, 83);
-  }
-  
-  span {
-    width: 85%;
-  }
-  
-  .delete-spot {
-    height: 20rem;
-    width: 25rem;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .delete-yes {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
-    height: 3rem;
-    background-color: red;  
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: bold;
-    color:  white;
-    border: 1px solid rgb(83, 83, 83);
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-  
-  .delete-no {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85%;
-    height: 3rem;
-    background-color: rgb(83, 83, 83);
-    margin-bottom: 1rem;
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: bold;
-    color:  white;
-    border: 1px solid rgb(83, 83, 83);
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
+  display: flex;
+  justify-content: center;
+  color: rgb(48, 48, 48); /* Darker tone for contrast */
+  font-family: 'Encode Sans SC', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Span for wrapping content in delete pop */
+span {
+  width: 85%;
+  font-family: 'Poppins', sans-serif;
+  color: rgb(63, 63, 63);
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Pop-up container */
+.delete-spot {
+  height: auto;
+  width: 28rem;
+  max-width: 90%;
+  background-color: white; /* Clean, modern background */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+/* Yes Button Styling */
+.delete-yes {
+  width: 85%;
+  height: 3.5rem;
+  background-color: #FF5A5F; /* Airbnb red */
+  margin-top: 1rem;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  padding: 10px;
+}
+
+.delete-yes:hover {
+  background-color: #ff3b3f; /* Darker red on hover */
+}
+
+/* No Button Styling */
+.delete-no {
+  width: 85%;
+  height: 3.5rem;
+  background-color: rgb(83, 83, 83);
+  margin-bottom: 1rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  padding: 10px;
+}
+
+.delete-no:hover {
+  background-color: #616161; /* Slightly lighter shade on hover */
+}

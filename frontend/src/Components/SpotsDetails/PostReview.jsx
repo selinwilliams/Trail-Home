@@ -17,7 +17,7 @@ function PostReviewModal({ spotId }) {
     const [hoverVal, setHoverVal] = useState(null);
   
     const colors = {
-      black: '#000000',
+      black: '#FFC107',
       grey: '#A9A9A9',
     }
   

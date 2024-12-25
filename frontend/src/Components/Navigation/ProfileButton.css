@@ -34,79 +34,93 @@
 }
 
 .button:hover {
-  background: #F6F9FE;
-  color: #174ea6;
+  background-color: #f6f9fe; /* Light grayish-blue background */
+  color: #FF5A5F; /* Airbnb pink color for text */
+  box-shadow: rgba(0, 0, 0, 0.15) 0 4px 10px -2px; /* Added hover effect */
 }
 
-.hidden {
-  display: none;
-}
 .profile-dropdown {
   position: absolute;
-  background-color: rgb(255, 255, 255);
-  color: #3c4043;
-  border-radius: 25px;
-  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  border-radius: 8px;
+  border: 1px solid #ddd;
   list-style: none;
   padding: 15px;
-  font-size: 20px;
-  margin: 0 ;
+  font-size: 16px;
+  margin: 0;
   right: 0;
   z-index: 3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Shadow effect for dropdown */
 }
-
 
 .fa-circle-user {
   font-size: 30px;
   color: #949494;
 }
 
+
+
 .manage-spot-button {
   align-items: center;
-  background:  rgb(97, 219, 162);;
-  border: 0 solid #E2E8F0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  color: #535353;
+  background: #00A699;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  color: white;
   display: inline-flex;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  height: 48px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
   justify-content: center;
   line-height: 24px;
-  overflow-wrap: break-word;
-  padding: 18px;
-  text-decoration: none;
-  width: auto;
+  padding: 12px 20px;
   border-radius: 8px;
+  text-decoration: none;
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logout-button {
   align-items: center;
-  background: #eb5200;
-  border: 0 solid #E2E8F0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  color: #404040;
+  background: #FF4040; 
+  border: none;
+  color: white;
   display: inline-flex;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  height: 42px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 40px;
   justify-content: center;
   line-height: 24px;
-  overflow-wrap: break-word;
-  padding: 18px;
-  text-decoration: none;
-  width: auto;
+  padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #FF1F1F; /* Slightly darker red for hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button:active {
+  background: #D93535; /* Darker red when clicked */
+  transform: scale(0.98);
+}
+
+.manage-spot-button:hover {
+  background: #008B76; /* Darker teal shade for hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.manage-spot-button:active {
+  background: #006F5F; /* Even darker for active state */
+  transform: scale(0.98);
+}
+
+
+/* Hidden class to keep elements from rendering */
+.hidden {
+  display: none;
 }
