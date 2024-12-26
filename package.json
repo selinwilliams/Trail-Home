@@ -19,5 +19,9 @@
 	},
 	"devDependencies": {
 		"sequelize-cli": "^6.6.2"
+	},
+	
+	"engines": {
+		"node": ">=16.0.0 <19"
 	}
 }
