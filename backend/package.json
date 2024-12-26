@@ -5,10 +5,6 @@
 	"scripts": {
 		"sequelize": "sequelize",
 		"sequelize-cli": "sequelize-cli",
-		"db:seed:undo:all": "sequelize-cli db:seed:undo:all",
-		"db:migrate:undo:all": "sequelize-cli db:migrate:undo:all",
-		"db:migrate": "sequelize-cli db:migrate",
-		"db:seed:all": "sequelize-cli db:seed:all",
 		"start": "per-env",
 		"start:development": "nodemon ./bin/www",
 		"start:production": "node ./bin/www",
