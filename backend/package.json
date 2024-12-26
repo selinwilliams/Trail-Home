@@ -5,6 +5,7 @@
 	"scripts": {
 		"sequelize": "sequelize",
 		"sequelize-cli": "sequelize-cli",
+		"dev": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
 		"start": "per-env",
 		"start:development": "nodemon ./bin/www",
 		"start:production": "node ./bin/www",
